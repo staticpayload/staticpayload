@@ -1,16 +1,12 @@
-I like nothing. I build [**nyzhi**](https://github.com/nyzhi-com/code).
-
-```
-AI coding agent for the terminal
-single binary · 50+ tools · 6 rust crates · zero runtime deps
-give it a task — it reads, writes, tests, verifies
-```
+I like nothing.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://sp-stats.nyzhi.workers.dev/?theme=dark" />
   <source media="(prefers-color-scheme: light)" srcset="https://sp-stats.nyzhi.workers.dev/?theme=light" />
   <img src="https://sp-stats.nyzhi.workers.dev/?theme=dark" alt="" />
 </picture>
+
+[nyzhi](https://github.com/nyzhi-com/code) — AI coding agent for the terminal, built in Rust.
 
 ---
 

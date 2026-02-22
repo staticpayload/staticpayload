@@ -65,43 +65,36 @@ function svg(user: GitHubUser, repos: GitHubRepo[], theme: Theme): string {
 	const langs = Object.entries(langMap)
 		.sort(([, a], [, b]) => b - a)
 		.slice(0, 7);
-	const maxN = Math.max(...langs.map(([, n]) => n));
 
-	const since = new Date(user.created_at);
-	const sinceStr = `${since.toLocaleString('en', { month: 'short' }).toLowerCase()} ${since.getFullYear()}`;
-
-	const W = 420;
+	const W = 380;
 	const pad = 24;
-	const langStart = 92;
-	const langH = 24;
-	const H = langStart + langs.length * langH + pad;
-	const barX = 130;
-	const barW = 180;
-
-	const langRows = langs
-		.map(([lang, count], i) => {
-			const y = langStart + i * langH;
-			const fw = (count / maxN) * barW;
-			const color = LANG_COLORS[lang] || c.cursor;
-			return `<text x="${pad}" y="${y}" fill="${c.text}" font-family="${FONT}" font-size="12.5">${esc(lang.toLowerCase())}</text>
-<rect x="${barX}" y="${y - 10}" width="${barW}" height="11" rx="2" fill="${c.bar_bg}"/>
-<rect x="${barX}" y="${y - 10}" width="${fw}" height="11" rx="2" fill="${color}"/>
-<text x="${barX + barW + 12}" y="${y}" fill="${c.text}" font-family="${FONT}" font-size="12.5">${count}</text>`;
-		})
-		.join('\n');
+	const cw = W - pad * 2;
 
 	const login = esc(user.login);
 	const cursorX = pad + (user.login.length + 7) * 8.1;
 
+	const sep = `<tspan fill="${c.text}"> · </tspan>`;
+	const row1 = langs.slice(0, 4);
+	const row2 = langs.slice(4);
+
+	const colorSpan = ([lang]: [string, number]) => {
+		const color = LANG_COLORS[lang] || c.cursor;
+		return `<tspan fill="${color}">${esc(lang.toLowerCase())}</tspan>`;
+	};
+
+	const line1 = row1.map(colorSpan).join(sep);
+	const line2 = row2.length ? row2.map(colorSpan).join(sep) : '';
+
+	const H = line2 ? 86 : 68;
+
 	return `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
 <style>@keyframes b{0%,100%{opacity:1}50%{opacity:0}}.c{animation:b 1.2s step-end infinite}</style>
 <rect width="${W}" height="${H}" rx="6" fill="${c.bg}" stroke="${c.border}" stroke-width="1"/>
-<text x="${pad}" y="28" fill="${c.title}" font-family="${FONT}" font-size="13.5" font-weight="600">${login}@github</text>
-<rect class="c" x="${cursorX}" y="16" width="7" height="14" rx="1" fill="${c.cursor}"/>
-<line x1="${pad}" y1="40" x2="${W - pad}" y2="40" stroke="${c.line}"/>
-<text x="${pad}" y="58" fill="${c.text}" font-family="${FONT}" font-size="12.5"><tspan>repos</tspan><tspan dx="6" fill="${c.title}">${user.public_repos}</tspan><tspan dx="24">since</tspan><tspan dx="6" fill="${c.title}">${sinceStr}</tspan></text>
-<line x1="${pad}" y1="70" x2="${W - pad}" y2="70" stroke="${c.line}"/>
-${langRows}
+<text x="${pad}" y="26" fill="${c.title}" font-family="${FONT}" font-size="13.5" font-weight="600">${login}@github</text>
+<rect class="c" x="${cursorX}" y="14" width="7" height="14" rx="1" fill="${c.cursor}"/>
+<line x1="${pad}" y1="38" x2="${cw + pad}" y2="38" stroke="${c.line}"/>
+<text x="${pad}" y="56" font-family="${FONT}" font-size="12.5">${line1}</text>
+${line2 ? `<text x="${pad}" y="74" font-family="${FONT}" font-size="12.5">${line2}</text>` : ''}
 </svg>`;
 }
 
