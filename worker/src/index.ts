@@ -66,35 +66,62 @@ function svg(user: GitHubUser, repos: GitHubRepo[], theme: Theme): string {
 		.sort(([, a], [, b]) => b - a)
 		.slice(0, 7);
 
-	const W = 380;
-	const pad = 24;
-	const cw = W - pad * 2;
+	const W = 495;
+	const pad = 28;
+	const dotR = 5;
+	const dotTextGap = 10;
+	const itemGap = 24;
+	const charW = 7.6;
 
 	const login = esc(user.login);
-	const cursorX = pad + (user.login.length + 7) * 8.1;
+	const cursorX = pad + (user.login.length + 7) * 8.4;
 
-	const sep = `<tspan fill="${c.text}"> · </tspan>`;
+	const gradStops = langs
+		.map(([lang], i) => {
+			const color = LANG_COLORS[lang] || c.cursor;
+			const pct = langs.length > 1 ? (i / (langs.length - 1)) * 100 : 50;
+			return `<stop offset="${pct}%" stop-color="${color}"/>`;
+		})
+		.join('');
+
 	const row1 = langs.slice(0, 4);
 	const row2 = langs.slice(4);
 
-	const colorSpan = ([lang]: [string, number]) => {
+	let dots = '';
+	let x = pad;
+	for (const [lang] of row1) {
 		const color = LANG_COLORS[lang] || c.cursor;
-		return `<tspan fill="${color}">${esc(lang.toLowerCase())}</tspan>`;
-	};
+		const label = lang.toLowerCase();
+		dots += `<circle cx="${x + dotR}" cy="${54}" r="${dotR}" fill="${color}"/>`;
+		dots += `<text x="${x + dotR * 2 + dotTextGap}" y="58" fill="${c.text}" font-family="${FONT}" font-size="13">${esc(label)}</text>`;
+		x += dotR * 2 + dotTextGap + label.length * charW + itemGap;
+	}
+	x = pad;
+	for (const [lang] of row2) {
+		const color = LANG_COLORS[lang] || c.cursor;
+		const label = lang.toLowerCase();
+		dots += `<circle cx="${x + dotR}" cy="${78}" r="${dotR}" fill="${color}"/>`;
+		dots += `<text x="${x + dotR * 2 + dotTextGap}" y="82" fill="${c.text}" font-family="${FONT}" font-size="13">${esc(label)}</text>`;
+		x += dotR * 2 + dotTextGap + label.length * charW + itemGap;
+	}
 
-	const line1 = row1.map(colorSpan).join(sep);
-	const line2 = row2.length ? row2.map(colorSpan).join(sep) : '';
-
-	const H = line2 ? 86 : 68;
+	const H = row2.length > 0 ? 102 : 78;
 
 	return `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
 <style>@keyframes b{0%,100%{opacity:1}50%{opacity:0}}.c{animation:b 1.2s step-end infinite}</style>
-<rect width="${W}" height="${H}" rx="6" fill="${c.bg}" stroke="${c.border}" stroke-width="1"/>
-<text x="${pad}" y="26" fill="${c.title}" font-family="${FONT}" font-size="13.5" font-weight="600">${login}@github</text>
-<rect class="c" x="${cursorX}" y="14" width="7" height="14" rx="1" fill="${c.cursor}"/>
-<line x1="${pad}" y1="38" x2="${cw + pad}" y2="38" stroke="${c.line}"/>
-<text x="${pad}" y="56" font-family="${FONT}" font-size="12.5">${line1}</text>
-${line2 ? `<text x="${pad}" y="74" font-family="${FONT}" font-size="12.5">${line2}</text>` : ''}
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="0">${gradStops}</linearGradient>
+<clipPath id="r"><rect width="${W}" height="${H}" rx="6"/></clipPath>
+</defs>
+<g clip-path="url(#r)">
+<rect width="${W}" height="${H}" fill="${c.bg}"/>
+<rect width="${W}" height="3" fill="url(#g)"/>
+</g>
+<rect width="${W}" height="${H}" rx="6" fill="none" stroke="${c.border}" stroke-width="1"/>
+<text x="${pad}" y="28" fill="${c.title}" font-family="${FONT}" font-size="14" font-weight="600">${login}@github</text>
+<rect class="c" x="${cursorX}" y="16" width="8" height="15" rx="1" fill="${c.cursor}"/>
+<line x1="${pad}" y1="40" x2="${W - pad}" y2="40" stroke="${c.line}"/>
+${dots}
 </svg>`;
 }
 
