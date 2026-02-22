@@ -1,6 +1,10 @@
-I like nothing. I build deterministic infrastructure for autonomous systems.
+I like nothing. I build [**nyzhi**](https://github.com/nyzhi-com/code).
 
-Linux kernel contributor. Rust · Go · C · Python · TypeScript.
+```
+AI coding agent for the terminal
+single binary · 50+ tools · 6 rust crates · zero runtime deps
+give it a task — it reads, writes, tests, verifies
+```
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://sp-stats.nyzhi.workers.dev/?theme=dark" />
@@ -10,15 +14,10 @@ Linux kernel contributor. Rust · Go · C · Python · TypeScript.
 
 ---
 
-[**oracle.omen**](https://github.com/staticpayload/oracle.omen) — autonomous agent framework in Rust. event-sourced, capability-safe, governed self-evolution.
-<br>[**cathedral.fabric**](https://github.com/staticpayload/cathedral.fabric) — distributed execution fabric with verifiable replay and certified audit trails.
-<br>[**obelisk.build**](https://github.com/staticpayload/obelisk.build) — hermetic build system with remote execution and time-travel debugging.
-<br>[**lattice.db**](https://github.com/staticpayload/lattice.db) — local-first embedded database with CRDT-based sync.
-<br>[**oh-my-codex**](https://github.com/staticpayload/oh-my-codex) — orchestration layer for AI coding CLIs.
-<br>[**jax-privacy-rs**](https://github.com/staticpayload/jax-privacy-rs) — Rust port of Google's JAX Privacy. DP-SGD, PLD/RDP accounting.
+<div align="center">
 
-**upstream** — [linux](https://github.com/staticpayload/linux) · [langchain](https://github.com/staticpayload/langchain) · [jax_privacy](https://github.com/staticpayload/jax_privacy) · [timesfm](https://github.com/staticpayload/timesfm)
+<a href="https://github.com/pulls?q=author%3Astaticpayload+org%3Agoogle-deepmind"><img src="https://img.shields.io/badge/Google%20DeepMind-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Google DeepMind" /></a>&nbsp;&nbsp;<a href="https://github.com/pulls?q=author%3Astaticpayload+org%3Agoogle"><img src="https://img.shields.io/badge/Google-34A853?style=for-the-badge&logo=google&logoColor=white" alt="Google" /></a>&nbsp;&nbsp;<a href="https://github.com/pulls?q=author%3Astaticpayload+org%3Agoogle-research"><img src="https://img.shields.io/badge/Google%20Research-EA4335?style=for-the-badge&logo=google&logoColor=white" alt="Google Research" /></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Linux%20Kernel-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux" />
 
----
+<sub>`jax_privacy` · `optax` · `gemma` · `timesfm` · `etils` · `brax` · `linux` · `langchain` · `workers-sdk` · `firebase-tools`</sub>
 
-<sub>stats card self-hosted on cloudflare workers · [source](worker/)</sub>
+</div>
