@@ -6,181 +6,247 @@ export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url);
 
-		if (url.pathname !== '/omen.svg') {
+		if (url.pathname !== '/omen.svg' && url.pathname !== '/nexus.svg') {
 			return new Response('not found', { status: 404 });
 		}
 
-		const width = 800;
-		const height = 400;
-
 		const svg = `
-<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" height="550" viewBox="0 0 1000 550" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Background Gradient -->
-    <radialGradient id="bg" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-      <stop offset="0%" stop-color="#111111"/>
-      <stop offset="100%" stop-color="#000000"/>
+    <!-- Modern Typography -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap');
+      
+      * { box-sizing: border-box; }
+      .font-sans { font-family: 'Inter', -apple-system, sans-serif; }
+      .font-mono { font-family: 'JetBrains Mono', monospace; }
+      
+      /* Colors */
+      .bg-base { fill: #030303; }
+      .border-subtle { stroke: rgba(255, 255, 255, 0.08); }
+      .border-glow { stroke: rgba(255, 255, 255, 0.2); }
+      .text-primary { fill: #ffffff; }
+      .text-muted { fill: #888888; }
+      .text-subtle { fill: #444444; }
+      
+      /* Smooth Animations */
+      @keyframes float-1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+      @keyframes float-2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+      @keyframes float-3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+      @keyframes float-4 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+      
+      @keyframes pulse-opacity { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+      @keyframes rotate-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      @keyframes dash-move { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
+      @keyframes dash-move-rev { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 200; } }
+      
+      @keyframes beam-flow { from { stroke-dashoffset: 150; } to { stroke-dashoffset: 0; } }
+      @keyframes progress { 0% { width: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { width: 292px; opacity: 0; } }
+
+      /* Element Classes */
+      .animate-float-1 { animation: float-1 7s ease-in-out infinite; }
+      .animate-float-2 { animation: float-2 6s ease-in-out infinite; }
+      .animate-float-3 { animation: float-3 8s ease-in-out infinite; }
+      .animate-float-4 { animation: float-4 5s ease-in-out infinite; }
+      
+      .animate-pulse { animation: pulse-opacity 3s ease-in-out infinite; }
+      .animate-rotate { transform-origin: center; animation: rotate-slow 40s linear infinite; }
+      .animate-rotate-rev { transform-origin: center; animation: rotate-slow 50s linear infinite reverse; }
+      
+      .data-line { stroke-dasharray: 4 8; animation: dash-move 30s linear infinite; }
+      .data-line-rev { stroke-dasharray: 4 8; animation: dash-move-rev 25s linear infinite; }
+      
+      .beam { stroke-dasharray: 30 120; animation: beam-flow 3s linear infinite; stroke-linecap: round; }
+      .progress-bar { animation: progress 4s ease-in-out infinite; }
+
+      .card-bg {
+        fill: rgba(8, 8, 8, 0.7);
+        backdrop-filter: blur(10px);
+      }
+    </style>
+    
+    <!-- Gradients & Patterns -->
+    <radialGradient id="mesh" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
+      <stop offset="50%" stop-color="rgba(255,255,255,0.01)"/>
+      <stop offset="100%" stop-color="transparent"/>
     </radialGradient>
-
-    <!-- Radar Sweep Gradient -->
-    <conicGradient id="radar" cx="50%" cy="50%" angle="0">
-      <stop offset="0%" stop-color="rgba(255,255,255,0)"/>
-      <stop offset="25%" stop-color="rgba(255,255,255,0.02)"/>
-      <stop offset="99%" stop-color="rgba(255,255,255,0.3)"/>
-      <stop offset="100%" stop-color="rgba(255,255,255,0.8)"/>
-    </conicGradient>
-
-    <!-- Glowing Node Filters -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="2" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-    <filter id="glow-intense" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="4" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-
-    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    
+    <pattern id="dot-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.03)" />
     </pattern>
 
-    <!-- Glitch Displacement -->
-    <filter id="glitch">
-      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.95" numOctaves="1" result="noise" />
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 3 -1" in="noise" result="coloredNoise" />
-      <feDisplacementMap xChannelSelector="R" yChannelSelector="A" in="SourceGraphic" in2="coloredNoise" scale="10" />
+    <linearGradient id="fade-h" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="20%" stop-color="rgba(255,255,255,0.08)" />
+      <stop offset="80%" stop-color="rgba(255,255,255,0.08)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </linearGradient>
+
+    <linearGradient id="fade-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="20%" stop-color="rgba(255,255,255,0.08)" />
+      <stop offset="80%" stop-color="rgba(255,255,255,0.08)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </linearGradient>
+    
+    <!-- Glow Filters -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
-
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap');
-      
-      text { font-family: 'JetBrains Mono', monospace; }
-      
-      /* Animations */
-      @keyframes spin { 100% { transform: rotate(360deg); } }
-      @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-      @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-      @keyframes drift1 { 0% { transform: translate(0, 0); } 50% { transform: translate(15px, -15px); } 100% { transform: translate(0, 0); } }
-      @keyframes drift2 { 0% { transform: translate(0, 0); } 50% { transform: translate(-20px, 10px); } 100% { transform: translate(0, 0); } }
-      @keyframes drift3 { 0% { transform: translate(0, 0); } 50% { transform: translate(10px, 20px); } 100% { transform: translate(0, 0); } }
-      @keyframes dash { to { stroke-dashoffset: -100; } }
-      @keyframes typing { from { width: 0; } to { width: 100%; } }
-      @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-      @keyframes glitch-anim {
-        0% { transform: translate(0) }
-        20% { transform: translate(-2px, 1px) }
-        40% { transform: translate(-1px, -1px) }
-        60% { transform: translate(2px, 1px) }
-        80% { transform: translate(1px, -1px) }
-        100% { transform: translate(0) }
-      }
-
-      /* Classes */
-      .radar { transform-origin: 400px 200px; animation: spin 4s linear infinite; }
-      .node { filter: url(#glow); animation: pulse 3s infinite ease-in-out; }
-      .node-core { filter: url(#glow-intense); animation: pulse 2s infinite ease-in-out; }
-      .text-glitch { animation: glitch-anim 5s infinite; }
-      .cursor { animation: blink 1s step-end infinite; }
-      .line-anim { stroke-dasharray: 5 10; animation: dash 20s linear infinite; }
-      .scanner { animation: scan 3s linear infinite; opacity: 0.1; }
-      
-      .d1 { animation: drift1 20s ease-in-out infinite; }
-      .d2 { animation: drift2 25s ease-in-out infinite; }
-      .d3 { animation: drift3 22s ease-in-out infinite; }
-    </style>
   </defs>
 
-  <!-- Background -->
-  <rect width="100%" height="100%" fill="url(#bg)"/>
-  <rect width="100%" height="100%" fill="url(#grid)"/>
+  <!-- Background Layer -->
+  <rect width="100%" height="100%" class="bg-base" />
+  <rect width="100%" height="100%" fill="url(#dot-grid)" />
+  <circle cx="500" cy="275" r="450" fill="url(#mesh)" />
 
-  <!-- Scanning Line -->
-  <g clip-path="url(#clip-screen)">
-    <rect class="scanner" width="100%" height="20%" fill="rgba(255,255,255,0.5)"/>
+  <!-- Animated Structural Grid -->
+  <g>
+    <!-- Horizontals -->
+    <rect x="0" y="80" width="1000" height="1" fill="url(#fade-h)" />
+    <rect x="0" y="275" width="1000" height="1" fill="url(#fade-h)" />
+    <rect x="0" y="470" width="1000" height="1" fill="url(#fade-h)" />
+    <!-- Verticals -->
+    <rect x="180" y="0" width="1" height="550" fill="url(#fade-v)" />
+    <rect x="500" y="0" width="1" height="550" fill="url(#fade-v)" />
+    <rect x="820" y="0" width="1" height="550" fill="url(#fade-v)" />
   </g>
 
-  <!-- Topology Network -->
-  <!-- Connections -->
-  <g stroke="rgba(255,255,255,0.15)" stroke-width="1" class="line-anim">
-    <path d="M 400 200 L 250 120" />
-    <path d="M 400 200 L 580 150" />
-    <path d="M 400 200 L 300 320" />
-    <path d="M 400 200 L 520 280" />
+  <!-- The Nexus (Central Core) -->
+  <g transform="translate(500, 275)">
+    <!-- Core dot -->
+    <circle cx="0" cy="0" r="2" fill="#fff" filter="url(#glow)" class="animate-pulse"/>
     
-    <path d="M 250 120 L 150 180" />
-    <path d="M 580 150 L 680 120" />
-    <path d="M 300 320 L 200 280" />
-    <path d="M 520 280 L 650 300" />
+    <!-- Complex rotating rings -->
+    <circle cx="0" cy="0" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" class="animate-rotate data-line" />
+    <circle cx="0" cy="0" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" class="animate-rotate-rev" stroke-dasharray="1 4" />
+    <circle cx="0" cy="0" r="90" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="animate-rotate data-line-rev" />
+    <circle cx="0" cy="0" r="140" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+    <circle cx="0" cy="0" r="220" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1" />
     
-    <!-- Crosslinks -->
-    <path d="M 250 120 L 300 320" />
-    <path d="M 580 150 L 520 280" />
+    <!-- Satellite Nodes -->
+    <g class="animate-rotate">
+      <circle cx="140" cy="0" r="3" fill="#fff" filter="url(#glow)"/>
+      <line x1="130" y1="0" x2="150" y2="0" stroke="rgba(255,255,255,0.5)" stroke-width="1" />
+    </g>
+    <g class="animate-rotate-rev">
+      <circle cx="0" cy="-220" r="2" fill="#fff" />
+      <line x1="0" y1="-210" x2="0" y2="-230" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
+    </g>
   </g>
 
-  <!-- Radar Sweep -->
-  <circle cx="400" cy="200" r="180" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-  <circle cx="400" cy="200" r="120" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="2 4"/>
-  <circle cx="400" cy="200" r="60" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-  
-  <path d="M 400 20 L 400 380 M 220 200 L 580 200" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-  
-  <circle cx="400" cy="200" r="180" fill="url(#radar)" class="radar" />
+  <!-- Connecting Data Lines (Cards to Nexus) -->
+  <!-- Paths -->
+  <path id="path1" d="M 370 120 C 420 120, 450 275, 500 275" fill="none" class="border-subtle data-line" stroke-width="1" />
+  <path id="path2" d="M 630 150 C 580 150, 550 275, 500 275" fill="none" class="border-subtle data-line-rev" stroke-width="1" />
+  <path id="path3" d="M 390 410 C 440 410, 460 275, 500 275" fill="none" class="border-subtle data-line" stroke-width="1" />
+  <path id="path4" d="M 630 390 C 580 390, 550 275, 500 275" fill="none" class="border-subtle data-line-rev" stroke-width="1" />
 
-  <!-- Nodes -->
-  <g fill="#fff">
-    <!-- Core -->
-    <circle cx="400" cy="200" r="6" class="node-core" />
-    <circle cx="400" cy="200" r="12" fill="none" stroke="#fff" stroke-width="1" opacity="0.5"/>
+  <!-- Beams shooting along paths -->
+  <path d="M 370 120 C 420 120, 450 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" filter="url(#glow)" />
+  <path d="M 630 150 C 580 150, 550 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" style="animation-delay: 1s;" filter="url(#glow)" />
+  <path d="M 390 410 C 440 410, 460 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" style="animation-delay: 2s;" filter="url(#glow)" />
+  <path d="M 630 390 C 580 390, 550 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" style="animation-delay: 1.5s;" filter="url(#glow)" />
+
+  <!-- SHADCN STYLE GLASS CARDS -->
+
+  <!-- TOP LEFT: Identity -->
+  <g transform="translate(50, 50)" class="animate-float-1">
+    <rect x="0" y="0" width="320" height="140" rx="12" class="card-bg border-subtle" stroke-width="1" />
+    <!-- Top accent line -->
+    <rect x="0" y="0" width="320" height="12" rx="12" fill="none" class="border-glow" stroke-width="1" clip-path="inset(0 0 128px 0)" />
     
-    <!-- Primary Nodes -->
-    <g class="d1"><circle cx="250" cy="120" r="4" class="node" /><text x="240" y="105" font-size="10" fill="rgba(255,255,255,0.6)">SYS.01</text></g>
-    <g class="d2"><circle cx="580" cy="150" r="4" class="node" /><text x="590" y="145" font-size="10" fill="rgba(255,255,255,0.6)">ORACLE</text></g>
-    <g class="d3"><circle cx="300" cy="320" r="4" class="node" /><text x="270" y="340" font-size="10" fill="rgba(255,255,255,0.6)">FABRIC</text></g>
-    <g class="d1"><circle cx="520" cy="280" r="4" class="node" /><text x="535" y="295" font-size="10" fill="rgba(255,255,255,0.6)">LATTICE</text></g>
+    <text x="28" y="44" class="text-primary font-sans" font-size="18" font-weight="600" letter-spacing="-0.5">STATICPAYLOAD</text>
+    <circle cx="175" cy="38" r="4" fill="#fff" filter="url(#glow)" class="animate-pulse" />
     
-    <!-- Secondary Nodes -->
-    <g class="d2"><circle cx="150" cy="180" r="2" class="node" style="animation-delay: -1s;"/></g>
-    <g class="d3"><circle cx="680" cy="120" r="2" class="node" style="animation-delay: -2s;"/></g>
-    <g class="d1"><circle cx="200" cy="280" r="2" class="node" style="animation-delay: -0.5s;"/></g>
-    <g class="d2"><circle cx="650" cy="300" r="2" class="node" style="animation-delay: -1.5s;"/></g>
+    <text x="28" y="74" class="text-muted font-sans" font-size="14">I like nothing.</text>
+    <text x="28" y="94" class="text-muted font-sans" font-size="14">I patch the kernel.</text>
+    
+    <line x1="28" y1="110" x2="292" y2="110" class="border-subtle" />
+    <text x="28" y="128" class="text-subtle font-mono" font-size="10" font-weight="700">STATE: DETERMINISTIC</text>
   </g>
 
-  <!-- Data Stream Overlay (Left) -->
-  <g font-size="9" fill="rgba(255,255,255,0.4)" transform="translate(20, 30)">
-    <text y="0">INITIALIZING SECURE UPLINK...</text>
-    <text y="15">ESTABLISHING HERMETIC BOUNDARY [OK]</text>
-    <text y="30">VERIFYING CAPABILITY TOKENS [OK]</text>
-    <text y="45">SYNCING EVENT LOG (CRDT) [OK]</text>
-    <text y="60" fill="rgba(255,255,255,0.8)">AWAITING DIRECTIVE...</text>
+  <!-- BOTTOM LEFT: Nyzhi -->
+  <g transform="translate(50, 340)" class="animate-float-2">
+    <rect x="0" y="0" width="340" height="160" rx="12" class="card-bg border-subtle" stroke-width="1" />
+    
+    <!-- Code block aesthetic header -->
+    <rect x="0" y="0" width="340" height="36" rx="12" fill="rgba(255,255,255,0.02)" clip-path="inset(0 0 124px 0)" />
+    <circle cx="20" cy="18" r="4" fill="rgba(255,255,255,0.1)" />
+    <circle cx="34" cy="18" r="4" fill="rgba(255,255,255,0.1)" />
+    <circle cx="48" cy="18" r="4" fill="rgba(255,255,255,0.1)" />
+    <text x="68" y="22" class="text-primary font-mono" font-size="12" font-weight="500">nyzhi_core.rs</text>
+    
+    <line x1="0" y1="36" x2="340" y2="36" class="border-subtle" />
+    
+    <text x="24" y="68" class="text-primary font-sans" font-size="16" font-weight="600" letter-spacing="-0.5">Nyzhi</text>
+    <text x="24" y="92" class="text-muted font-sans" font-size="13">Single binary AI coding agent.</text>
+    <text x="24" y="112" class="text-muted font-sans" font-size="13">50+ tools, 6 rust crates, zero deps.</text>
+    
+    <g transform="translate(24, 134)">
+      <rect x="0" y="0" width="292" height="4" rx="2" fill="rgba(255,255,255,0.05)" />
+      <rect x="0" y="0" width="0" height="4" rx="2" fill="#fff" class="progress-bar" filter="url(#glow)" />
+    </g>
   </g>
 
-  <!-- Metrics Overlay (Right) -->
-  <g font-size="9" fill="rgba(255,255,255,0.4)" transform="translate(680, 30)" text-anchor="end">
-    <text y="0">LATENCY: 1.02ms</text>
-    <text y="15">UPTIME: 99.999%</text>
-    <text y="30">MEM: 12MB / 128MB</text>
-    <text y="45">STATE: DETERMINISTIC</text>
+  <!-- TOP RIGHT: Google / DeepMind -->
+  <g transform="translate(630, 60)" class="animate-float-3">
+    <rect x="0" y="0" width="320" height="190" rx="12" class="card-bg border-subtle" stroke-width="1" />
+    <rect x="0" y="0" width="320" height="12" rx="12" fill="none" class="border-glow" stroke-width="1" clip-path="inset(0 0 178px 0)" />
+    
+    <text x="28" y="44" class="text-primary font-sans" font-size="15" font-weight="600" letter-spacing="-0.5">UPSTREAM // GOOGLE &amp; DEEPMIND</text>
+    <line x1="28" y1="60" x2="292" y2="60" class="border-subtle" />
+    
+    <!-- Item 1 -->
+    <circle cx="32" cy="84" r="3" fill="rgba(255,255,255,0.2)" />
+    <text x="46" y="88" class="text-primary font-mono" font-size="13">jax_privacy</text>
+    <text x="160" y="88" class="text-muted font-sans" font-size="13">DP-SGD core</text>
+
+    <!-- Item 2 -->
+    <circle cx="32" cy="114" r="3" fill="rgba(255,255,255,0.2)" />
+    <text x="46" y="118" class="text-primary font-mono" font-size="13">optax</text>
+    <text x="160" y="118" class="text-muted font-sans" font-size="13">gradient optimization</text>
+
+    <!-- Item 3 -->
+    <circle cx="32" cy="144" r="3" fill="rgba(255,255,255,0.2)" />
+    <text x="46" y="148" class="text-primary font-mono" font-size="13">gemma</text>
+    <text x="160" y="148" class="text-muted font-sans" font-size="13">open-weight LLM</text>
+
+    <!-- Item 4 -->
+    <circle cx="32" cy="174" r="3" fill="rgba(255,255,255,0.2)" />
+    <text x="46" y="178" class="text-primary font-mono" font-size="13">timesfm</text>
+    <text x="160" y="178" class="text-muted font-sans" font-size="13">time-series FM</text>
   </g>
 
-  <!-- Bottom Terminal/Prompt -->
-  <rect x="20" y="350" width="760" height="30" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)"/>
-  <text x="35" y="370" font-size="12" fill="#fff" font-weight="700">
-    <tspan fill="rgba(255,255,255,0.5)">root@mainframe:~# </tspan>
-    <tspan class="text-glitch">execute_payload --target nyzhi</tspan>
-    <tspan class="cursor" fill="#fff">█</tspan>
-  </text>
-  
-  <!-- Identity/Signature (Top Right) -->
-  <text x="780" y="380" font-size="10" fill="rgba(255,255,255,0.2)" text-anchor="end" font-weight="bold" letter-spacing="2">STATICPAYLOAD</text>
+  <!-- BOTTOM RIGHT: Kernel & Infra -->
+  <g transform="translate(630, 290)" class="animate-float-4">
+    <rect x="0" y="0" width="320" height="200" rx="12" class="card-bg border-subtle" stroke-width="1" />
+    
+    <text x="28" y="44" class="text-primary font-sans" font-size="15" font-weight="600" letter-spacing="-0.5">UPSTREAM // FOUNDATION</text>
+    <line x1="28" y1="60" x2="292" y2="60" class="border-subtle" />
 
-  <!-- Framing / Borders -->
-  <path d="M 0 20 L 20 0 L 780 0 L 800 20 L 800 380 L 780 400 L 20 400 L 0 380 Z" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-  
-  <!-- Corner Accents -->
-  <path d="M 0 30 L 0 0 L 30 0" fill="none" stroke="#fff" stroke-width="2"/>
-  <path d="M 770 0 L 800 0 L 800 30" fill="none" stroke="#fff" stroke-width="2"/>
-  <path d="M 800 370 L 800 400 L 770 400" fill="none" stroke="#fff" stroke-width="2"/>
-  <path d="M 30 400 L 0 400 L 0 370" fill="none" stroke="#fff" stroke-width="2"/>
+    <!-- Item 1 -->
+    <text x="28" y="88" class="text-primary font-mono" font-size="13">linux</text>
+    <text x="140" y="88" class="text-muted font-sans" font-size="13">kernel patches</text>
+
+    <!-- Item 2 -->
+    <text x="28" y="118" class="text-primary font-mono" font-size="13">brax &amp; etils</text>
+    <text x="140" y="118" class="text-muted font-sans" font-size="13">research infra</text>
+
+    <!-- Item 3 -->
+    <text x="28" y="148" class="text-primary font-mono" font-size="13">langchain</text>
+    <text x="140" y="148" class="text-muted font-sans" font-size="13">core schema</text>
+
+    <!-- Item 4 -->
+    <text x="28" y="178" class="text-primary font-mono" font-size="13">cloudflare</text>
+    <text x="140" y="178" class="text-muted font-sans" font-size="13">workers-sdk</text>
+  </g>
+
+  <!-- Center Footer ID -->
+  <text x="500" y="530" class="text-subtle font-mono" font-size="10" text-anchor="middle" letter-spacing="4">CAPABILITY_SAFE // EVENT_SOURCED // VERIFIABLE_REPLAY</text>
 
 </svg>
 `;
