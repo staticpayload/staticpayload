@@ -14,10 +14,34 @@ give it a task — it reads, writes, tests, verifies
 
 ---
 
-<div align="center">
+<table>
+<tr>
+<td align="center" width="40%">
+<br/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/google-deepmind-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="assets/google-deepmind-light.svg" />
+  <img src="assets/google-deepmind-dark.svg" height="24" alt="Google DeepMind" />
+</picture>
+<br/><br/>
+<code>jax_privacy</code> · <code>optax</code> · <code>gemma</code>
+<br/><br/>
+</td>
+<td align="center" width="30%">
+<br/>
+<img src="assets/google.png" height="22" alt="Google" />
+<br/><br/>
+<code>timesfm</code> · <code>etils</code> · <code>brax</code>
+<br/><br/>
+</td>
+<td align="center" width="30%">
+<br/>
+<img src="assets/tux.svg" height="36" alt="Linux" />
+<br/><br/>
+<code>kernel</code>
+<br/><br/>
+</td>
+</tr>
+</table>
 
-<a href="https://github.com/pulls?q=author%3Astaticpayload+org%3Agoogle-deepmind"><img src="https://img.shields.io/badge/Google%20DeepMind-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Google DeepMind" /></a>&nbsp;&nbsp;<a href="https://github.com/pulls?q=author%3Astaticpayload+org%3Agoogle"><img src="https://img.shields.io/badge/Google-34A853?style=for-the-badge&logo=google&logoColor=white" alt="Google" /></a>&nbsp;&nbsp;<a href="https://github.com/pulls?q=author%3Astaticpayload+org%3Agoogle-research"><img src="https://img.shields.io/badge/Google%20Research-EA4335?style=for-the-badge&logo=google&logoColor=white" alt="Google Research" /></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Linux%20Kernel-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux" />
-
-<sub>`jax_privacy` · `optax` · `gemma` · `timesfm` · `etils` · `brax` · `linux` · `langchain` · `workers-sdk` · `firebase-tools`</sub>
-
-</div>
+<sub>also: `langchain` · `workers-sdk` · `firebase-tools` · `docusaurus` · `coolify` · `gumroad`</sub>
