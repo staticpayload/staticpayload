@@ -2,254 +2,208 @@ interface Env {
 	GITHUB_TOKEN?: string;
 }
 
+const ICON = {
+	google:
+		'M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z',
+	deepmind:
+		'm5.99,1.62a8.54,8.54 0 0 0 -2.54,6.83c0.35,4.4 4.51,7.99 8.28,7.99c3.5,0 4.88,-3.06 4.54,-5.14a4.32,4.32 0 0 0 -0.95,-2.07c0.63,0.34 1.24,0.77 1.81,1.3c1.52,1.41 2.44,3.23 2.58,5.1c0.33,4.13 -2.73,8.37 -7.85,8.37c-1.69,0 -3.48,-0.43 -4.98,-1.14c-4.06,-1.92 -6.88,-6.06 -6.88,-10.86c0,-4.43 2.41,-8.3 5.99,-10.38zm6.15,-1.62c1.69,0 3.48,0.43 4.98,1.14a12,12 0 0 1 6.88,10.86c0,4.43 -2.41,8.3 -5.99,10.38a8.54,8.54 0 0 0 2.54,-6.83c-0.35,-4.4 -4.51,-7.99 -8.28,-7.99c-3.5,0 -4.88,3.06 -4.54,5.14a4.3,4.3 0 0 0 0.96,2.07a8.72,8.72 0 0 1 -1.81,-1.3c-1.52,-1.41 -2.44,-3.23 -2.59,-5.1c-0.33,-4.13 2.73,-8.37 7.85,-8.37z',
+	linux:
+		'M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z',
+	rust: 'M23.835 11.703l-1.008-.623a13.7 13.7 0 00-.028-.294l.866-.807a.348.348 0 00-.116-.578l-1.106-.414a8.5 8.5 0 00-.087-.286l.69-.959a.346.346 0 00-.226-.544l-1.166-.19a9.4 9.4 0 00-.14-.262l.49-1.076a.344.344 0 00-.328-.49l-1.184.042a6.7 6.7 0 00-.188-.227l.273-1.153a.347.347 0 00-.417-.417l-1.153.272c-.076-.064-.151-.126-.228-.187l.042-1.185a.344.344 0 00-.49-.328l-1.076.491-.262-.14-.19-1.167a.348.348 0 00-.545-.227l-.96.691-.285-.086-.414-1.107a.348.348 0 00-.578-.115l-.807.866a9.3 9.3 0 00-.294-.028L12.295.168a.346.346 0 00-.59 0l-.623 1.007a13.7 13.7 0 00-.294.028l-.807-.866a.346.346 0 00-.578.115l-.414 1.107-.286.086-.959-.691a.348.348 0 00-.545.227l-.19 1.167-.262.14-1.076-.49a.346.346 0 00-.49.327l.042 1.185c-.077.06-.152.123-.228.187l-1.153-.272a.347.347 0 00-.417.417l.271 1.153a8 8 0 00-.186.227l-1.185-.042a.346.346 0 00-.328.49l.491 1.076a9.2 9.2 0 00-.141.262l-1.166.19a.348.348 0 00-.226.544l.69.959-.087.286-1.106.414a.348.348 0 00-.116.578l.866.807a9.3 9.3 0 00-.028.294l-1.008.623a.344.344 0 000 .59l1.008.623c.008.098.018.196.028.294l-.866.808a.346.346 0 00.116.578l1.106.414c.027.096.057.191.087.286l-.69.959a.345.345 0 00.226.544l1.166.19c.046.088.092.175.141.262l-.491 1.076a.346.346 0 00.328.49l1.184-.042c.062.077.124.153.187.228l-.271 1.154a.346.346 0 00.417.416l1.153-.271c.075.064.151.125.228.186l-.042 1.185a.344.344 0 00.49.327l1.076-.49.262.14.19 1.167a.348.348 0 00.545.227l.959-.691.285.087.414 1.107a.345.345 0 00.578.115l.808-.866c.097.011.196.02.294.03l.623 1.007a.347.347 0 00.59 0l.623-1.007c.098-.01.196-.019.294-.03l.807.866a.348.348 0 00.578-.115l.414-1.107a8.5 8.5 0 00.286-.087l.958.691a.345.345 0 00.545-.227l.19-1.167.262-.14 1.076.49a.347.347 0 00.49-.327l-.042-1.185a6.7 6.7 0 00.227-.186l1.153.271a.347.347 0 00.417-.416l-.271-1.154c.063-.075.125-.151.186-.228l1.185.042a.344.344 0 00.328-.49l-.49-1.076c.048-.087.095-.174.14-.262l1.167-.19a.348.348 0 00.226-.544l-.69-.959.087-.286 1.106-.414a.346.346 0 00.116-.578l-.866-.808c.01-.098.02-.196.028-.294l1.008-.623a.344.344 0 000-.59zM17.1 20.058a.714.714 0 11.299-1.396.714.714 0 01-.3 1.396zm-.342-2.314a.649.649 0 00-.772.5l-.357 1.668a8.716 8.716 0 01-7.315-.034l-.357-1.668a.648.648 0 00-.771-.5l-1.474.316a8.7 8.7 0 01-.76-.898h7.167c.081 0 .136-.014.136-.088v-2.536c0-.074-.054-.088-.136-.088h-2.096v-1.608h2.267c.207 0 1.107.059 1.394 1.209.09.353.288 1.504.424 1.873.134.413.683 1.238 1.268 1.238h3.572a.749.749 0 00.13-.013 8.787 8.787 0 01-.812.953zM6.837 20.024a.714.714 0 11-.3-1.396.714.714 0 01.3 1.396zM4.118 8.997a.714.714 0 11-1.304.579.714.714 0 011.304-.579zm-.835 1.981l1.535-.682a.65.65 0 00.33-.859l-.316-.714h1.244v5.602H3.567a8.775 8.775 0 01-.284-3.347zm6.734-.544V8.784h2.96c.153 0 1.08.177 1.08.87 0 .574-.711.781-1.295.781zm10.758 1.486c0 .22-.008.437-.025.651h-.9c-.09 0-.126.059-.126.148v.413c0 .973-.549 1.185-1.03 1.238-.457.052-.965-.191-1.027-.472-.27-1.518-.72-1.843-1.431-2.403.882-.56 1.8-1.386 1.8-2.492 0-1.193-.82-1.946-1.377-2.315-.783-.516-1.65-.62-1.883-.62H5.468a8.765 8.765 0 014.907-2.77l1.098 1.151a.648.648 0 00.918.021l1.227-1.174a8.775 8.775 0 016.004 4.276l-.84 1.898a.652.652 0 00.33.859l1.618.719c.028.287.042.577.042.871zM12.7 10.32a.713.713 0 11.984 1.032.714.714 0 01-.984-1.032zm8.339 6.71a.711.711 0 01.94-.362.714.714 0 11-.94.363z',
+	typescript:
+		'M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 011.306.34v2.458a3.95 3.95 0 00-.643-.361 5.093 5.093 0 00-.717-.26 5.453 5.453 0 00-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 00-.623.242c-.17.104-.3.229-.393.374a.888.888 0 00-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 01-1.012 1.085 4.38 4.38 0 01-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 01-1.84-.164 5.544 5.544 0 01-1.512-.493v-2.63a5.033 5.033 0 003.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 00-.074-1.089 2.12 2.12 0 00-.537-.5 5.597 5.597 0 00-.807-.444 27.72 27.72 0 00-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 011.47-.629 7.536 7.536 0 011.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z',
+	python:
+		'M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z',
+	go: 'M1.811 10.231c-.047 0-.058-.023-.035-.059l.246-.315c.023-.035.081-.058.128-.058h4.172c.046 0 .058.035.035.07l-.199.303c-.023.036-.082.07-.117.07zM.047 11.306c-.047 0-.059-.023-.035-.058l.245-.316c.023-.035.082-.058.129-.058h5.328c.047 0 .07.035.058.07l-.093.28c-.012.047-.058.07-.105.07zm2.828 1.075c-.047 0-.059-.035-.035-.07l.163-.292c.023-.035.07-.07.117-.07h2.337c.047 0 .07.035.07.082l-.023.28c0 .047-.047.082-.082.082zm12.129-2.36c-.736.187-1.239.327-1.963.514-.176.046-.187.058-.34-.117-.174-.199-.303-.327-.548-.444-.737-.362-1.45-.257-2.115.175-.795.514-1.204 1.274-1.192 2.22.011.935.654 1.706 1.577 1.835.795.105 1.46-.175 1.987-.77.105-.13.198-.27.315-.434H10.47c-.245 0-.304-.152-.222-.35.152-.362.432-.97.596-1.274a.315.315 0 01.292-.187h4.253c-.023.316-.023.631-.07.947a4.983 4.983 0 01-.958 2.29c-.841 1.11-1.94 1.8-3.33 1.986-1.145.152-2.209-.07-3.143-.77-.865-.655-1.356-1.52-1.484-2.595-.152-1.274.222-2.419.993-3.424.83-1.086 1.928-1.776 3.272-2.02 1.098-.2 2.15-.07 3.096.571.62.41 1.063.97 1.356 1.648.07.105.023.164-.117.2m3.868 6.461c-1.064-.024-2.034-.328-2.852-1.029a3.665 3.665 0 01-1.262-2.255c-.21-1.32.152-2.489.947-3.529.853-1.122 1.881-1.706 3.272-1.95 1.192-.21 2.314-.095 3.33.595.923.63 1.496 1.484 1.648 2.605.198 1.578-.257 2.863-1.344 3.962-.771.783-1.718 1.273-2.805 1.495-.315.06-.63.07-.934.106zm2.78-4.72c-.011-.153-.011-.27-.034-.387-.21-1.157-1.274-1.81-2.384-1.554-1.087.245-1.788.935-2.045 2.033-.21.912.234 1.835 1.075 2.21.643.28 1.285.244 1.905-.07.923-.48 1.425-1.228 1.484-2.233z',
+	cplusplus:
+		'M22.394 6c-.167-.29-.398-.543-.652-.69L12.926.22c-.509-.294-1.34-.294-1.848 0L2.26 5.31c-.508.293-.923 1.013-.923 1.6v10.18c0 .294.104.62.271.91.167.29.398.543.652.69l8.816 5.09c.508.293 1.34.293 1.848 0l8.816-5.09c.254-.147.485-.4.652-.69.167-.29.27-.616.27-.91V6.91c.003-.294-.1-.62-.268-.91zM12 19.11c-3.92 0-7.109-3.19-7.109-7.11 0-3.92 3.19-7.11 7.11-7.11a7.133 7.133 0 016.156 3.553l-3.076 1.78a3.567 3.567 0 00-3.08-1.78A3.56 3.56 0 008.444 12 3.56 3.56 0 0012 15.555a3.57 3.57 0 003.08-1.778l3.078 1.78A7.135 7.135 0 0112 19.11zm7.11-6.715h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79zm2.962 0h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79z',
+	c: 'M16.5921 9.1962s-.354-3.298-3.627-3.39c-3.274-.09-4.955 2.474-4.955 6.14 0 3.665 1.858 6.597 5.045 6.597 3.184 0 3.538-3.665 3.538-3.665l6.104.365s.36 3.31-2.196 5.836c-2.552 2.524-5.69 2.937-7.876 2.92-2.19-.017-5.226.034-8.16-2.97-2.938-3.01-3.436-5.93-3.436-8.8 0-2.87.556-6.67 4.047-9.55C7.444.72 9.849 0 12.254 0c10.042 0 10.717 9.26 10.717 9.26z',
+};
+
+function svgIcon(path: string, x: number, y: number, size: number, fill = 'rgba(255,255,255,0.4)'): string {
+	const s = size / 24;
+	return `<g transform="translate(${x},${y}) scale(${s})"><path d="${path}" fill="${fill}"/></g>`;
+}
+
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url);
-
-		if (url.pathname !== '/omen.svg' && url.pathname !== '/nexus.svg') {
+		if (url.pathname !== '/card.svg') {
 			return new Response('not found', { status: 404 });
 		}
 
-		const svg = `
-<svg width="1000" height="550" viewBox="0 0 1000 550" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <!-- Modern Typography -->
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap');
-      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap');
-      
-      * { box-sizing: border-box; }
-      .font-sans { font-family: 'Inter', -apple-system, sans-serif; }
-      .font-mono { font-family: 'JetBrains Mono', monospace; }
-      
-      /* Colors */
-      .bg-base { fill: #030303; }
-      .border-subtle { stroke: rgba(255, 255, 255, 0.08); }
-      .border-glow { stroke: rgba(255, 255, 255, 0.2); }
-      .text-primary { fill: #ffffff; }
-      .text-muted { fill: #888888; }
-      .text-subtle { fill: #444444; }
-      
-      /* Smooth Animations */
-      @keyframes float-1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-      @keyframes float-2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-      @keyframes float-3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-      @keyframes float-4 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-      
-      @keyframes pulse-opacity { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
-      @keyframes rotate-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      @keyframes dash-move { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
-      @keyframes dash-move-rev { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 200; } }
-      
-      @keyframes beam-flow { from { stroke-dashoffset: 150; } to { stroke-dashoffset: 0; } }
-      @keyframes progress { 0% { width: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { width: 292px; opacity: 0; } }
+		const W = 840;
+		const cW = 760;
+		const cX = 40;
+		const p = 24;
 
-      /* Element Classes */
-      .animate-float-1 { animation: float-1 7s ease-in-out infinite; }
-      .animate-float-2 { animation: float-2 6s ease-in-out infinite; }
-      .animate-float-3 { animation: float-3 8s ease-in-out infinite; }
-      .animate-float-4 { animation: float-4 5s ease-in-out infinite; }
-      
-      .animate-pulse { animation: pulse-opacity 3s ease-in-out infinite; }
-      .animate-rotate { transform-origin: center; animation: rotate-slow 40s linear infinite; }
-      .animate-rotate-rev { transform-origin: center; animation: rotate-slow 50s linear infinite reverse; }
-      
-      .data-line { stroke-dasharray: 4 8; animation: dash-move 30s linear infinite; }
-      .data-line-rev { stroke-dasharray: 4 8; animation: dash-move-rev 25s linear infinite; }
-      
-      .beam { stroke-dasharray: 30 120; animation: beam-flow 3s linear infinite; stroke-linecap: round; }
-      .progress-bar { animation: progress 4s ease-in-out infinite; }
+		const langs: [string, string][] = [
+			['rust', 'Rust'],
+			['typescript', 'TS'],
+			['python', 'Python'],
+			['go', 'Go'],
+			['cplusplus', 'C++'],
+			['c', 'C'],
+		];
 
-      .card-bg {
-        fill: rgba(8, 8, 8, 0.7);
-        backdrop-filter: blur(10px);
-      }
-    </style>
-    
-    <!-- Gradients & Patterns -->
-    <radialGradient id="mesh" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
-      <stop offset="50%" stop-color="rgba(255,255,255,0.01)"/>
-      <stop offset="100%" stop-color="transparent"/>
-    </radialGradient>
-    
-    <pattern id="dot-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.03)" />
-    </pattern>
+		const upstream = [
+			['jax_privacy', 'DP-SGD core', 'deepmind', 'Google DeepMind'],
+			['optax', 'gradient optimization', 'deepmind', 'Google DeepMind'],
+			['gemma', 'open-weight LLM', 'google', 'Google DeepMind'],
+			['timesfm', 'time-series FM', 'google', 'Google Research'],
+			['linux', 'kernel subsystem patches', 'linux', 'kernel.org'],
+			['langchain', 'core schema', '', 'LangChain'],
+			['workers-sdk', 'wrangler runtime', '', 'Cloudflare'],
+		];
 
-    <linearGradient id="fade-h" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
-      <stop offset="20%" stop-color="rgba(255,255,255,0.08)" />
-      <stop offset="80%" stop-color="rgba(255,255,255,0.08)" />
-      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-    </linearGradient>
+		// Layout math - generous spacing
+		const c1Y = 32;
+		const c1H = 90;
 
-    <linearGradient id="fade-v" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
-      <stop offset="20%" stop-color="rgba(255,255,255,0.08)" />
-      <stop offset="80%" stop-color="rgba(255,255,255,0.08)" />
-      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-    </linearGradient>
-    
-    <!-- Glow Filters -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-  </defs>
+		const langRowY = c1Y + c1H + 28;
+		const langRowH = 40;
 
-  <!-- Background Layer -->
-  <rect width="100%" height="100%" class="bg-base" />
-  <rect width="100%" height="100%" fill="url(#dot-grid)" />
-  <circle cx="500" cy="275" r="450" fill="url(#mesh)" />
+		const orgRowY = langRowY + langRowH + 12;
+		const orgRowH = 24;
 
-  <!-- Animated Structural Grid -->
-  <g>
-    <!-- Horizontals -->
-    <rect x="0" y="80" width="1000" height="1" fill="url(#fade-h)" />
-    <rect x="0" y="275" width="1000" height="1" fill="url(#fade-h)" />
-    <rect x="0" y="470" width="1000" height="1" fill="url(#fade-h)" />
-    <!-- Verticals -->
-    <rect x="180" y="0" width="1" height="550" fill="url(#fade-v)" />
-    <rect x="500" y="0" width="1" height="550" fill="url(#fade-v)" />
-    <rect x="820" y="0" width="1" height="550" fill="url(#fade-v)" />
-  </g>
+		const c2Y = orgRowY + orgRowH + 28;
+		const c2H = 100;
 
-  <!-- The Nexus (Central Core) -->
-  <g transform="translate(500, 275)">
-    <!-- Core dot -->
-    <circle cx="0" cy="0" r="2" fill="#fff" filter="url(#glow)" class="animate-pulse"/>
-    
-    <!-- Complex rotating rings -->
-    <circle cx="0" cy="0" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" class="animate-rotate data-line" />
-    <circle cx="0" cy="0" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" class="animate-rotate-rev" stroke-dasharray="1 4" />
-    <circle cx="0" cy="0" r="90" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="animate-rotate data-line-rev" />
-    <circle cx="0" cy="0" r="140" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
-    <circle cx="0" cy="0" r="220" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1" />
-    
-    <!-- Satellite Nodes -->
-    <g class="animate-rotate">
-      <circle cx="140" cy="0" r="3" fill="#fff" filter="url(#glow)"/>
-      <line x1="130" y1="0" x2="150" y2="0" stroke="rgba(255,255,255,0.5)" stroke-width="1" />
-    </g>
-    <g class="animate-rotate-rev">
-      <circle cx="0" cy="-220" r="2" fill="#fff" />
-      <line x1="0" y1="-210" x2="0" y2="-230" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
-    </g>
-  </g>
+		const rowH = 34;
+		const c3Y = c2Y + c2H + 24;
+		const c3H = 56 + upstream.length * rowH + 12;
 
-  <!-- Connecting Data Lines (Cards to Nexus) -->
-  <!-- Paths -->
-  <path id="path1" d="M 370 120 C 420 120, 450 275, 500 275" fill="none" class="border-subtle data-line" stroke-width="1" />
-  <path id="path2" d="M 630 150 C 580 150, 550 275, 500 275" fill="none" class="border-subtle data-line-rev" stroke-width="1" />
-  <path id="path3" d="M 390 410 C 440 410, 460 275, 500 275" fill="none" class="border-subtle data-line" stroke-width="1" />
-  <path id="path4" d="M 630 390 C 580 390, 550 275, 500 275" fill="none" class="border-subtle data-line-rev" stroke-width="1" />
+		const footY = c3Y + c3H + 28;
+		const H = footY + 24;
 
-  <!-- Beams shooting along paths -->
-  <path d="M 370 120 C 420 120, 450 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" filter="url(#glow)" />
-  <path d="M 630 150 C 580 150, 550 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" style="animation-delay: 1s;" filter="url(#glow)" />
-  <path d="M 390 410 C 440 410, 460 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" style="animation-delay: 2s;" filter="url(#glow)" />
-  <path d="M 630 390 C 580 390, 550 275, 500 275" fill="none" stroke="#fff" stroke-width="1.5" class="beam" style="animation-delay: 1.5s;" filter="url(#glow)" />
+		// Language icons - centered row
+		const iconSize = 16;
+		const langGap = 60;
+		const langTotalW = langs.length * iconSize + (langs.length - 1) * langGap;
+		const langStartX = cX + (cW - langTotalW) / 2;
 
-  <!-- SHADCN STYLE GLASS CARDS -->
+		let langIcons = '';
+		langs.forEach(([key, label], i) => {
+			const x = langStartX + i * (iconSize + langGap);
+			const y = langRowY + (langRowH - iconSize) / 2 - 4;
+			langIcons += svgIcon(ICON[key as keyof typeof ICON], x, y, iconSize, 'rgba(255,255,255,0.35)');
+			langIcons += `<text x="${x + iconSize / 2}" y="${y + iconSize + 14}" class="mono dim" font-size="9" text-anchor="middle">${label}</text>`;
+		});
 
-  <!-- TOP LEFT: Identity -->
-  <g transform="translate(50, 50)" class="animate-float-1">
-    <rect x="0" y="0" width="320" height="140" rx="12" class="card-bg border-subtle" stroke-width="1" />
-    <!-- Top accent line -->
-    <rect x="0" y="0" width="320" height="12" rx="12" fill="none" class="border-glow" stroke-width="1" clip-path="inset(0 0 128px 0)" />
-    
-    <text x="28" y="44" class="text-primary font-sans" font-size="18" font-weight="600" letter-spacing="-0.5">STATICPAYLOAD</text>
-    <circle cx="175" cy="38" r="4" fill="#fff" filter="url(#glow)" class="animate-pulse" />
-    
-    <text x="28" y="74" class="text-muted font-sans" font-size="14">I like nothing.</text>
-    <text x="28" y="94" class="text-muted font-sans" font-size="14">I patch the kernel.</text>
-    
-    <line x1="28" y1="110" x2="292" y2="110" class="border-subtle" />
-    <text x="28" y="128" class="text-subtle font-mono" font-size="10" font-weight="700">STATE: DETERMINISTIC</text>
-  </g>
+		// Org logos row - Google, DeepMind, Linux centered
+		const orgs: [string, string][] = [
+			['google', 'Google'],
+			['deepmind', 'DeepMind'],
+			['linux', 'Linux'],
+		];
+		const orgIconSize = 14;
+		const orgGap = 80;
+		const orgTotalW = orgs.length * orgIconSize + (orgs.length - 1) * orgGap;
+		const orgStartX = cX + (cW - orgTotalW) / 2;
 
-  <!-- BOTTOM LEFT: Nyzhi -->
-  <g transform="translate(50, 340)" class="animate-float-2">
-    <rect x="0" y="0" width="340" height="160" rx="12" class="card-bg border-subtle" stroke-width="1" />
-    
-    <!-- Code block aesthetic header -->
-    <rect x="0" y="0" width="340" height="36" rx="12" fill="rgba(255,255,255,0.02)" clip-path="inset(0 0 124px 0)" />
-    <circle cx="20" cy="18" r="4" fill="rgba(255,255,255,0.1)" />
-    <circle cx="34" cy="18" r="4" fill="rgba(255,255,255,0.1)" />
-    <circle cx="48" cy="18" r="4" fill="rgba(255,255,255,0.1)" />
-    <text x="68" y="22" class="text-primary font-mono" font-size="12" font-weight="500">nyzhi_core.rs</text>
-    
-    <line x1="0" y1="36" x2="340" y2="36" class="border-subtle" />
-    
-    <text x="24" y="68" class="text-primary font-sans" font-size="16" font-weight="600" letter-spacing="-0.5">Nyzhi</text>
-    <text x="24" y="92" class="text-muted font-sans" font-size="13">Single binary AI coding agent.</text>
-    <text x="24" y="112" class="text-muted font-sans" font-size="13">50+ tools, 6 rust crates, zero deps.</text>
-    
-    <g transform="translate(24, 134)">
-      <rect x="0" y="0" width="292" height="4" rx="2" fill="rgba(255,255,255,0.05)" />
-      <rect x="0" y="0" width="0" height="4" rx="2" fill="#fff" class="progress-bar" filter="url(#glow)" />
-    </g>
-  </g>
+		let orgIcons = '';
+		orgs.forEach(([key, label], i) => {
+			const x = orgStartX + i * (orgIconSize + orgGap);
+			const y = orgRowY + 2;
+			orgIcons += svgIcon(ICON[key as keyof typeof ICON], x, y, orgIconSize, 'rgba(255,255,255,0.25)');
+			orgIcons += `<text x="${x + orgIconSize + 6}" y="${y + orgIconSize - 2}" class="sans dim" font-size="10">${label}</text>`;
+		});
 
-  <!-- TOP RIGHT: Google / DeepMind -->
-  <g transform="translate(630, 60)" class="animate-float-3">
-    <rect x="0" y="0" width="320" height="190" rx="12" class="card-bg border-subtle" stroke-width="1" />
-    <rect x="0" y="0" width="320" height="12" rx="12" fill="none" class="border-glow" stroke-width="1" clip-path="inset(0 0 178px 0)" />
-    
-    <text x="28" y="44" class="text-primary font-sans" font-size="15" font-weight="600" letter-spacing="-0.5">UPSTREAM // GOOGLE &amp; DEEPMIND</text>
-    <line x1="28" y1="60" x2="292" y2="60" class="border-subtle" />
-    
-    <!-- Item 1 -->
-    <circle cx="32" cy="84" r="3" fill="rgba(255,255,255,0.2)" />
-    <text x="46" y="88" class="text-primary font-mono" font-size="13">jax_privacy</text>
-    <text x="160" y="88" class="text-muted font-sans" font-size="13">DP-SGD core</text>
+		// Upstream rows
+		let upRows = '';
+		upstream.forEach(([name, desc, iconKey, org], i) => {
+			const y = c3Y + 56 + i * rowH;
+			const dotCy = y + 5;
 
-    <!-- Item 2 -->
-    <circle cx="32" cy="114" r="3" fill="rgba(255,255,255,0.2)" />
-    <text x="46" y="118" class="text-primary font-mono" font-size="13">optax</text>
-    <text x="160" y="118" class="text-muted font-sans" font-size="13">gradient optimization</text>
+			upRows += `<circle cx="${cX + p + 6}" cy="${dotCy}" r="2.5" fill="rgba(255,255,255,0.12)">`;
+			upRows += `<animate attributeName="opacity" values="0.12;0.5;0.12" dur="3s" begin="${i * 0.3}s" repeatCount="indefinite"/></circle>`;
+			upRows += `<text x="${cX + p + 18}" y="${y + 9}" class="mono white" font-size="12.5">${name}</text>`;
+			upRows += `<text x="${cX + p + 180}" y="${y + 9}" class="sans muted" font-size="12.5">${desc}</text>`;
 
-    <!-- Item 3 -->
-    <circle cx="32" cy="144" r="3" fill="rgba(255,255,255,0.2)" />
-    <text x="46" y="148" class="text-primary font-mono" font-size="13">gemma</text>
-    <text x="160" y="148" class="text-muted font-sans" font-size="13">open-weight LLM</text>
+			if (iconKey && ICON[iconKey as keyof typeof ICON]) {
+				upRows += svgIcon(ICON[iconKey as keyof typeof ICON], cX + cW - p - 110, y - 2, 12, 'rgba(255,255,255,0.15)');
+			}
+			upRows += `<text x="${cX + cW - p}" y="${y + 9}" class="sans dim" font-size="10" text-anchor="end">${org}</text>`;
+		});
 
-    <!-- Item 4 -->
-    <circle cx="32" cy="174" r="3" fill="rgba(255,255,255,0.2)" />
-    <text x="46" y="178" class="text-primary font-mono" font-size="13">timesfm</text>
-    <text x="160" y="178" class="text-muted font-sans" font-size="13">time-series FM</text>
-  </g>
+		const svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <style>
+    .sans { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; }
+    .mono { font-family: ui-monospace, 'Cascadia Code', Menlo, monospace; }
+    .white { fill: #fff; }
+    .muted { fill: #888; }
+    .dim { fill: #555; }
+  </style>
+  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="0.5" fill="rgba(255,255,255,0.03)"/>
+  </pattern>
+  <radialGradient id="glow" cx="50%" cy="35%" r="55%">
+    <stop offset="0%" stop-color="rgba(255,255,255,0.025)"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </radialGradient>
+  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="3"/>
+  </filter>
+</defs>
 
-  <!-- BOTTOM RIGHT: Kernel & Infra -->
-  <g transform="translate(630, 290)" class="animate-float-4">
-    <rect x="0" y="0" width="320" height="200" rx="12" class="card-bg border-subtle" stroke-width="1" />
-    
-    <text x="28" y="44" class="text-primary font-sans" font-size="15" font-weight="600" letter-spacing="-0.5">UPSTREAM // FOUNDATION</text>
-    <line x1="28" y1="60" x2="292" y2="60" class="border-subtle" />
+<!-- BG -->
+<rect width="${W}" height="${H}" fill="#050505"/>
+<rect width="${W}" height="${H}" fill="url(#grid)"/>
+<ellipse cx="${W / 2}" cy="${H * 0.3}" rx="500" ry="300" fill="url(#glow)"/>
 
-    <!-- Item 1 -->
-    <text x="28" y="88" class="text-primary font-mono" font-size="13">linux</text>
-    <text x="140" y="88" class="text-muted font-sans" font-size="13">kernel patches</text>
+<!-- Faint orbit -->
+<circle cx="${W / 2}" cy="${H / 2}" r="320" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="0.5" stroke-dasharray="2 16">
+  <animateTransform attributeName="transform" type="rotate" from="0 ${W / 2} ${H / 2}" to="360 ${W / 2} ${H / 2}" dur="90s" repeatCount="indefinite"/>
+</circle>
 
-    <!-- Item 2 -->
-    <text x="28" y="118" class="text-primary font-mono" font-size="13">brax &amp; etils</text>
-    <text x="140" y="118" class="text-muted font-sans" font-size="13">research infra</text>
+<!-- ═══ IDENTITY ═══ -->
+<rect x="${cX}" y="${c1Y}" width="${cW}" height="${c1H}" rx="10" fill="#0a0a0a" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<text x="${cX + p}" y="${c1Y + 36}" class="sans white" font-size="20" font-weight="600" letter-spacing="-0.5">STATICPAYLOAD</text>
+<circle cx="${cX + p + 200}" cy="${c1Y + 31}" r="3.5" fill="#fff" filter="url(#soft)">
+  <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3s" repeatCount="indefinite"/>
+</circle>
+<text x="${cX + p}" y="${c1Y + 64}" class="sans muted" font-size="14">I like nothing. I patch the kernel.</text>
+<line x1="${cX + p}" y1="${c1Y + 78}" x2="${cX + cW - p}" y2="${c1Y + 78}" stroke="rgba(255,255,255,0.05)"/>
 
-    <!-- Item 3 -->
-    <text x="28" y="148" class="text-primary font-mono" font-size="13">langchain</text>
-    <text x="140" y="148" class="text-muted font-sans" font-size="13">core schema</text>
+<!-- ═══ LANGUAGE ICONS ═══ -->
+${langIcons}
 
-    <!-- Item 4 -->
-    <text x="28" y="178" class="text-primary font-mono" font-size="13">cloudflare</text>
-    <text x="140" y="178" class="text-muted font-sans" font-size="13">workers-sdk</text>
-  </g>
+<!-- ═══ ORG LOGOS ═══ -->
+${orgIcons}
 
-  <!-- Center Footer ID -->
-  <text x="500" y="530" class="text-subtle font-mono" font-size="10" text-anchor="middle" letter-spacing="4">CAPABILITY_SAFE // EVENT_SOURCED // VERIFIABLE_REPLAY</text>
+<!-- ═══ NYZHI ═══ -->
+<rect x="${cX}" y="${c2Y}" width="${cW}" height="${c2H}" rx="10" fill="#0a0a0a" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
 
-</svg>
-`;
+<!-- Tab bar -->
+<rect x="${cX}" y="${c2Y}" width="${cW}" height="28" rx="10" fill="rgba(255,255,255,0.015)"/>
+<rect x="${cX}" y="${c2Y + 18}" width="${cW}" height="10" fill="rgba(255,255,255,0.015)"/>
+<circle cx="${cX + 16}" cy="${c2Y + 14}" r="3.5" fill="rgba(255,255,255,0.07)"/>
+<circle cx="${cX + 28}" cy="${c2Y + 14}" r="3.5" fill="rgba(255,255,255,0.07)"/>
+<circle cx="${cX + 40}" cy="${c2Y + 14}" r="3.5" fill="rgba(255,255,255,0.07)"/>
+<text x="${cX + 56}" y="${c2Y + 18}" class="mono dim" font-size="10">nyzhi</text>
+<line x1="${cX}" y1="${c2Y + 28}" x2="${cX + cW}" y2="${c2Y + 28}" stroke="rgba(255,255,255,0.05)"/>
+
+<text x="${cX + p}" y="${c2Y + 52}" class="sans white" font-size="15" font-weight="600">AI coding agent for the terminal</text>
+<text x="${cX + p}" y="${c2Y + 74}" class="sans muted" font-size="13">single binary · 50+ tools · 6 rust crates · zero runtime deps</text>
+
+<!-- Progress bar -->
+<rect x="${cX + p}" y="${c2Y + 88}" width="${cW - p * 2}" height="3" rx="1.5" fill="rgba(255,255,255,0.04)"/>
+<rect x="${cX + p}" y="${c2Y + 88}" width="0" height="3" rx="1.5" fill="rgba(255,255,255,0.4)">
+  <animate attributeName="width" values="0;${cW - p * 2};0" dur="8s" repeatCount="indefinite"/>
+</rect>
+
+<!-- ═══ UPSTREAM ═══ -->
+<rect x="${cX}" y="${c3Y}" width="${cW}" height="${c3H}" rx="10" fill="#0a0a0a" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<text x="${cX + p}" y="${c3Y + 30}" class="sans white" font-size="12" font-weight="600" letter-spacing="1.5">UPSTREAM</text>
+<line x1="${cX + p}" y1="${c3Y + 44}" x2="${cX + cW - p}" y2="${c3Y + 44}" stroke="rgba(255,255,255,0.05)"/>
+
+${upRows}
+
+<!-- Footer -->
+<text x="${W / 2}" y="${footY + 6}" class="mono dim" font-size="8.5" text-anchor="middle" letter-spacing="3">DETERMINISTIC · AUDITABLE · CAPABILITY-SAFE</text>
+
+</svg>`;
 
 		return new Response(svg.trim(), {
 			headers: {
