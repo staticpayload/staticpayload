@@ -29,162 +29,283 @@ function icon(d: string, x: number, y: number, size: number, fill = 'rgba(255,25
 	return `<g transform="translate(${x},${y}) scale(${s})"><path d="${d}" fill="${fill}"/></g>`;
 }
 
+type ThemeName = 'dark' | 'light';
+
+interface Theme {
+	pageBg: string;
+	panelBg: string;
+	panelBgAlt: string;
+	surface: string;
+	surfaceAlt: string;
+	border: string;
+	title: string;
+	text: string;
+	muted: string;
+	subtle: string;
+	accent: string;
+	accentSoft: string;
+	accentStroke: string;
+	accentText: string;
+	chipBg: string;
+	chipBorder: string;
+	chipText: string;
+	icon: string;
+	iconMuted: string;
+	gridDot: string;
+	glowA: string;
+	glowB: string;
+	shadow: string;
+}
+
+interface RenderedChip {
+	svg: string;
+	width: number;
+}
+
+const THEMES: Record<ThemeName, Theme> = {
+	dark: {
+		pageBg: '#050816',
+		panelBg: '#0b1020',
+		panelBgAlt: '#111827',
+		surface: 'rgba(10, 15, 30, 0.82)',
+		surfaceAlt: 'rgba(8, 12, 24, 0.76)',
+		border: 'rgba(148, 163, 184, 0.16)',
+		title: '#f8fafc',
+		text: '#cbd5e1',
+		muted: '#94a3b8',
+		subtle: '#64748b',
+		accent: '#2dd4bf',
+		accentSoft: 'rgba(45, 212, 191, 0.14)',
+		accentStroke: 'rgba(45, 212, 191, 0.3)',
+		accentText: '#99f6e4',
+		chipBg: 'rgba(15, 23, 42, 0.92)',
+		chipBorder: 'rgba(148, 163, 184, 0.14)',
+		chipText: '#e2e8f0',
+		icon: 'rgba(226, 232, 240, 0.9)',
+		iconMuted: 'rgba(148, 163, 184, 0.78)',
+		gridDot: 'rgba(148, 163, 184, 0.1)',
+		glowA: 'rgba(45, 212, 191, 0.18)',
+		glowB: 'rgba(245, 158, 11, 0.12)',
+		shadow: 'rgba(2, 6, 23, 0.38)',
+	},
+	light: {
+		pageBg: '#f6f8fb',
+		panelBg: '#ffffff',
+		panelBgAlt: '#eef2f7',
+		surface: 'rgba(255, 255, 255, 0.86)',
+		surfaceAlt: 'rgba(248, 250, 252, 0.96)',
+		border: 'rgba(15, 23, 42, 0.08)',
+		title: '#0f172a',
+		text: '#334155',
+		muted: '#475569',
+		subtle: '#64748b',
+		accent: '#0f766e',
+		accentSoft: 'rgba(15, 118, 110, 0.1)',
+		accentStroke: 'rgba(15, 118, 110, 0.24)',
+		accentText: '#115e59',
+		chipBg: 'rgba(255, 255, 255, 0.96)',
+		chipBorder: 'rgba(15, 23, 42, 0.08)',
+		chipText: '#0f172a',
+		icon: 'rgba(15, 23, 42, 0.92)',
+		iconMuted: 'rgba(71, 85, 105, 0.78)',
+		gridDot: 'rgba(15, 23, 42, 0.08)',
+		glowA: 'rgba(15, 118, 110, 0.1)',
+		glowB: 'rgba(194, 65, 12, 0.08)',
+		shadow: 'rgba(15, 23, 42, 0.08)',
+	},
+};
+
+const LANGS = [
+	['rust', 'Rust'],
+	['typescript', 'TS'],
+	['python', 'Python'],
+	['go', 'Go'],
+	['cplusplus', 'C++'],
+	['c', 'C'],
+] as const;
+
+const ORGS = [
+	['deepmind', 'DeepMind'],
+	['google', 'Google'],
+	['linux', 'Linux'],
+	['langchain', 'LangChain'],
+	['cloudflare', 'Cloudflare'],
+] as const;
+
+const PRINCIPLES = ['deterministic', 'auditable', 'capability-safe'] as const;
+const METRICS = ['50+ tools', 'single binary', 'zero runtime deps'] as const;
+
+function escapeXml(value: string): string {
+	return value
+		.replaceAll('&', '&amp;')
+		.replaceAll('<', '&lt;')
+		.replaceAll('>', '&gt;')
+		.replaceAll('"', '&quot;')
+		.replaceAll("'", '&apos;');
+}
+
+function textChip(label: string, x: number, y: number, theme: Theme, accent = false, fontSize = 11.5): RenderedChip {
+	const width = Math.round(22 + label.length * (fontSize * 0.57));
+	const fill = accent ? theme.accentSoft : theme.chipBg;
+	const stroke = accent ? theme.accentStroke : theme.chipBorder;
+	const color = accent ? theme.accentText : theme.chipText;
+
+	return {
+		width,
+		svg: `<rect x="${x}" y="${y}" width="${width}" height="28" rx="14" fill="${fill}" stroke="${stroke}" stroke-width="1"/><text x="${x + width / 2}" y="${y + 18}" fill="${color}" font-size="${fontSize}" text-anchor="middle" class="mono">${escapeXml(label)}</text>`,
+	};
+}
+
+function languageChip(
+	key: keyof typeof ICON,
+	label: string,
+	x: number,
+	y: number,
+	theme: Theme,
+): RenderedChip {
+	const width = Math.round(34 + label.length * 6.2);
+
+	return {
+		width,
+		svg: `<rect x="${x}" y="${y}" width="${width}" height="30" rx="15" fill="${theme.chipBg}" stroke="${theme.chipBorder}" stroke-width="1"/>${icon(ICON[key], x + 10, y + 9, 12, theme.icon)}<text x="${x + 28}" y="${y + 19}" fill="${theme.chipText}" font-size="12" class="mono">${escapeXml(label)}</text>`,
+	};
+}
+
+function orgMark(
+	key: keyof typeof ICON,
+	label: string,
+	cx: number,
+	y: number,
+	theme: Theme,
+): string {
+	return `${icon(ICON[key], cx - 10, y, 20, theme.iconMuted)}<text x="${cx}" y="${y + 34}" fill="${theme.muted}" font-size="10.5" text-anchor="middle" class="mono">${escapeXml(label)}</text>`;
+}
+
+function renderCard(themeName: ThemeName): string {
+	const theme = THEMES[themeName];
+	const W = 960;
+	const H = 380;
+	const panelX = 20;
+	const panelY = 20;
+	const panelW = 920;
+	const panelH = 340;
+	const leftX = 56;
+	const rightX = 520;
+	const topBoxY = 56;
+	const topBoxH = 140;
+	const bottomBoxY = 214;
+	const bottomBoxH = 104;
+
+	let languageRow = '';
+	let cursor = leftX;
+	for (const [key, label] of LANGS) {
+		const chip = languageChip(key, label, cursor, 290, theme);
+		languageRow += chip.svg;
+		cursor += chip.width + 8;
+	}
+
+	let principleRow = '';
+	cursor = leftX;
+	for (const label of PRINCIPLES) {
+		const chip = textChip(label, cursor, 328, theme, true);
+		principleRow += chip.svg;
+		cursor += chip.width + 10;
+	}
+
+	let metricRow = '';
+	cursor = rightX + 24;
+	for (const label of METRICS) {
+		const chip = textChip(label, cursor, 153, theme);
+		metricRow += chip.svg;
+		cursor += chip.width + 8;
+	}
+
+	const orgStart = rightX + 34;
+	const orgStep = 72;
+	let orgRow = '';
+	ORGS.forEach(([key, label], index) => {
+		orgRow += orgMark(key, label, orgStart + index * orgStep, 256, theme);
+	});
+
+	return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<title id="title">staticpayload profile card</title>
+<desc id="desc">A profile card for staticpayload highlighting systems work, languages, current project, and notable surfaces.</desc>
+<defs>
+  <linearGradient id="panel-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="${theme.panelBg}"/>
+    <stop offset="100%" stop-color="${theme.panelBgAlt}"/>
+  </linearGradient>
+  <radialGradient id="glow-left" cx="0%" cy="0%" r="85%">
+    <stop offset="0%" stop-color="${theme.glowA}"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </radialGradient>
+  <radialGradient id="glow-right" cx="100%" cy="0%" r="75%">
+    <stop offset="0%" stop-color="${theme.glowB}"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </radialGradient>
+  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+    <circle cx="1.5" cy="1.5" r="0.9" fill="${theme.gridDot}"/>
+  </pattern>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="${theme.shadow}"/>
+  </filter>
+  <style>
+    .sans { font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+    .mono { font-family: "IBM Plex Mono", "SFMono-Regular", "Cascadia Code", Menlo, monospace; }
+  </style>
+</defs>
+
+<rect width="${W}" height="${H}" fill="${theme.pageBg}"/>
+<rect width="${W}" height="${H}" fill="url(#grid)"/>
+
+<g filter="url(#shadow)">
+  <rect x="${panelX}" y="${panelY}" width="${panelW}" height="${panelH}" rx="28" fill="url(#panel-fill)" stroke="${theme.border}" stroke-width="1.2"/>
+</g>
+
+<rect x="${panelX}" y="${panelY}" width="${panelW}" height="${panelH}" rx="28" fill="url(#glow-left)"/>
+<rect x="${panelX}" y="${panelY}" width="${panelW}" height="${panelH}" rx="28" fill="url(#glow-right)"/>
+<rect x="${leftX}" y="67" width="112" height="4" rx="2" fill="${theme.accent}"/>
+
+<text x="${leftX}" y="94" fill="${theme.muted}" font-size="12" letter-spacing="2.8" class="mono">STATICPAYLOAD</text>
+<text x="${leftX}" y="134" fill="${theme.title}" font-size="34" font-weight="700" class="sans">systems, edge,</text>
+<text x="${leftX}" y="170" fill="${theme.title}" font-size="34" font-weight="700" class="sans">terminal-first tooling</text>
+
+<text x="${leftX}" y="210" fill="${theme.text}" font-size="16.5" class="sans">building nyzhi and shipping low-level software</text>
+<text x="${leftX}" y="235" fill="${theme.text}" font-size="16.5" class="sans">with a bias for deterministic, auditable systems</text>
+<text x="${leftX}" y="260" fill="${theme.text}" font-size="16.5" class="sans">that stay capability-safe under load.</text>
+
+<text x="${leftX}" y="280" fill="${theme.subtle}" font-size="11.5" letter-spacing="2" class="mono">STACK</text>
+${languageRow}
+${principleRow}
+
+<rect x="${rightX}" y="${topBoxY}" width="364" height="${topBoxH}" rx="22" fill="${theme.surface}" stroke="${theme.border}" stroke-width="1"/>
+<text x="${rightX + 24}" y="84" fill="${theme.subtle}" font-size="11.5" letter-spacing="2" class="mono">CURRENT BUILD</text>
+<text x="${rightX + 24}" y="123" fill="${theme.title}" font-size="30" font-weight="700" class="sans">nyzhi</text>
+<text x="${rightX + 24}" y="148" fill="${theme.text}" font-size="15.5" class="sans">AI coding agent for the terminal.</text>
+<text x="${rightX + 24}" y="190" fill="${theme.muted}" font-size="11.5" class="mono">github.com/nyzhi-com/code</text>
+${metricRow}
+
+<rect x="${rightX}" y="${bottomBoxY}" width="364" height="${bottomBoxH}" rx="22" fill="${theme.surfaceAlt}" stroke="${theme.border}" stroke-width="1"/>
+<text x="${rightX + 24}" y="242" fill="${theme.subtle}" font-size="11.5" letter-spacing="2" class="mono">NOTABLE SURFACES</text>
+${orgRow}
+
+<text x="${rightX + 364}" y="340" fill="${theme.subtle}" font-size="10.5" text-anchor="end" class="mono">sp-stats.nyzhi.workers.dev/card.svg?theme=${themeName}</text>
+</svg>`;
+}
+
 export default {
-	async fetch(request: Request, env: Env): Promise<Response> {
+	async fetch(request: Request): Promise<Response> {
 		const url = new URL(request.url);
 		if (url.pathname !== '/card.svg') {
 			return new Response('not found', { status: 404 });
 		}
 
-		const W = 840;
-		const cW = 760;
-		const cX = 40;
-		const p = 24;
+		const themeName = url.searchParams.get('theme') === 'light' ? 'light' : 'dark';
+		const svg = renderCard(themeName);
 
-		const langs: [string, string][] = [
-			['rust', 'Rust'],
-			['typescript', 'TS'],
-			['python', 'Python'],
-			['go', 'Go'],
-			['cplusplus', 'C++'],
-			['c', 'C'],
-		];
-
-		const megaOrgs: [string, string][] = [
-			['deepmind', 'Google DeepMind'],
-			['google', 'Google'],
-			['linux', 'Linux Kernel'],
-			['langchain', 'LangChain'],
-			['cloudflare', 'Cloudflare'],
-		];
-
-		// === LAYOUT ===
-		const c1Y = 32;
-		const c1H = 90;
-
-		const langRowY = c1Y + c1H + 24;
-		const langRowH = 38;
-
-		const c2Y = langRowY + langRowH + 24;
-		const c2H = 112;
-
-		const c3Y = c2Y + c2H + 24;
-		const c3H = 120;
-
-		const footY = c3Y + c3H + 24;
-		const H = footY + 24;
-
-		// Language icons row
-		const icoSz = 16;
-		const langGap = 56;
-		const langSpan = langs.length * icoSz + (langs.length - 1) * langGap;
-		const langX0 = cX + (cW - langSpan) / 2;
-
-		let langIcons = '';
-		langs.forEach(([key, label], i) => {
-			const x = langX0 + i * (icoSz + langGap);
-			const y = langRowY + 4;
-			langIcons += icon(ICON[key], x, y, icoSz, 'rgba(255,255,255,0.3)');
-			langIcons += `<text x="${x + icoSz / 2}" y="${y + icoSz + 13}" class="mono dim" font-size="9" text-anchor="middle">${label}</text>`;
-		});
-
-		// Upstream org logos - evenly spaced inside card
-		const orgIcoSz = 20;
-		const orgCount = megaOrgs.length;
-		const innerW = cW - p * 2;
-		const orgStep = innerW / (orgCount - 1);
-		const orgBaseY = c3Y + 52;
-
-		let orgLogos = '';
-		megaOrgs.forEach(([key, label], i) => {
-			const cx = cX + p + i * orgStep;
-			const ix = cx - orgIcoSz / 2;
-			orgLogos += icon(ICON[key], ix, orgBaseY, orgIcoSz, 'rgba(255,255,255,0.35)');
-			orgLogos += `<circle cx="${cx}" cy="${orgBaseY + orgIcoSz / 2}" r="22" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1">`;
-			orgLogos += `<animate attributeName="opacity" values="0.3;1;0.3" dur="4s" begin="${i * 0.5}s" repeatCount="indefinite"/></circle>`;
-			orgLogos += `<text x="${cx}" y="${orgBaseY + orgIcoSz + 18}" class="sans dim" font-size="10" text-anchor="middle">${label}</text>`;
-		});
-
-		const svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <style>
-    .sans { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; }
-    .mono { font-family: ui-monospace, 'Cascadia Code', Menlo, monospace; }
-    .white { fill: #fff; }
-    .muted { fill: #888; }
-    .dim { fill: #555; }
-  </style>
-  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
-    <circle cx="1" cy="1" r="0.5" fill="rgba(255,255,255,0.03)"/>
-  </pattern>
-  <radialGradient id="glow" cx="50%" cy="35%" r="55%">
-    <stop offset="0%" stop-color="rgba(255,255,255,0.025)"/>
-    <stop offset="100%" stop-color="transparent"/>
-  </radialGradient>
-  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
-    <feGaussianBlur stdDeviation="3"/>
-  </filter>
-</defs>
-
-<!-- BG -->
-<rect width="${W}" height="${H}" fill="#050505"/>
-<rect width="${W}" height="${H}" fill="url(#grid)"/>
-<ellipse cx="${W / 2}" cy="${H * 0.3}" rx="500" ry="280" fill="url(#glow)"/>
-
-<!-- Faint orbit -->
-<circle cx="${W / 2}" cy="${H / 2}" r="300" fill="none" stroke="rgba(255,255,255,0.012)" stroke-width="0.5" stroke-dasharray="2 16">
-  <animateTransform attributeName="transform" type="rotate" from="0 ${W / 2} ${H / 2}" to="360 ${W / 2} ${H / 2}" dur="90s" repeatCount="indefinite"/>
-</circle>
-
-<!-- ═══ IDENTITY ═══ -->
-<rect x="${cX}" y="${c1Y}" width="${cW}" height="${c1H}" rx="10" fill="#0a0a0a" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-<text x="${cX + p}" y="${c1Y + 36}" class="sans white" font-size="20" font-weight="600" letter-spacing="-0.5">STATICPAYLOAD</text>
-<circle cx="${cX + p + 200}" cy="${c1Y + 31}" r="3.5" fill="#fff" filter="url(#soft)">
-  <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3s" repeatCount="indefinite"/>
-</circle>
-<text x="${cX + p}" y="${c1Y + 64}" class="sans muted" font-size="14">I like nothing. I patch the kernel.</text>
-<line x1="${cX + p}" y1="${c1Y + 78}" x2="${cX + cW - p}" y2="${c1Y + 78}" stroke="rgba(255,255,255,0.05)"/>
-
-<!-- ═══ LANGUAGES ═══ -->
-${langIcons}
-
-<!-- ═══ NYZHI ═══ -->
-<rect x="${cX}" y="${c2Y}" width="${cW}" height="${c2H}" rx="10" fill="#0a0a0a" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-
-<!-- Tab bar -->
-<rect x="${cX}" y="${c2Y}" width="${cW}" height="28" rx="10" fill="rgba(255,255,255,0.015)"/>
-<rect x="${cX}" y="${c2Y + 18}" width="${cW}" height="10" fill="rgba(255,255,255,0.015)"/>
-<circle cx="${cX + 16}" cy="${c2Y + 14}" r="3.5" fill="rgba(255,255,255,0.07)"/>
-<circle cx="${cX + 28}" cy="${c2Y + 14}" r="3.5" fill="rgba(255,255,255,0.07)"/>
-<circle cx="${cX + 40}" cy="${c2Y + 14}" r="3.5" fill="rgba(255,255,255,0.07)"/>
-<text x="${cX + 56}" y="${c2Y + 18}" class="mono dim" font-size="10">nyzhi</text>
-<line x1="${cX}" y1="${c2Y + 28}" x2="${cX + cW}" y2="${c2Y + 28}" stroke="rgba(255,255,255,0.05)"/>
-
-<text x="${cX + p}" y="${c2Y + 52}" class="sans white" font-size="15" font-weight="600">AI coding agent for the terminal</text>
-<text x="${cX + p}" y="${c2Y + 74}" class="sans muted" font-size="13">single binary · 50+ tools · 6 rust crates · zero runtime deps</text>
-<text x="${cX + p}" y="${c2Y + 94}" class="mono dim" font-size="10">github.com/nyzhi-com/code</text>
-
-<!-- Progress bar -->
-<rect x="${cX + p}" y="${c2Y + 102}" width="${cW - p * 2}" height="3" rx="1.5" fill="rgba(255,255,255,0.04)"/>
-<rect x="${cX + p}" y="${c2Y + 102}" width="0" height="3" rx="1.5" fill="rgba(255,255,255,0.4)">
-  <animate attributeName="width" values="0;${cW - p * 2};0" dur="8s" repeatCount="indefinite"/>
-</rect>
-
-<!-- ═══ UPSTREAM ═══ -->
-<rect x="${cX}" y="${c3Y}" width="${cW}" height="${c3H}" rx="10" fill="#0a0a0a" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-<text x="${cX + p}" y="${c3Y + 30}" class="sans white" font-size="12" font-weight="600" letter-spacing="1.5">UPSTREAM CONTRIBUTIONS</text>
-<line x1="${cX + p}" y1="${c3Y + 42}" x2="${cX + cW - p}" y2="${c3Y + 42}" stroke="rgba(255,255,255,0.05)"/>
-
-${orgLogos}
-
-<!-- Footer -->
-<text x="${W / 2}" y="${footY + 6}" class="mono dim" font-size="8.5" text-anchor="middle" letter-spacing="3">DETERMINISTIC · AUDITABLE · CAPABILITY-SAFE</text>
-
-</svg>`;
-
-		return new Response(svg.trim(), {
+		return new Response(svg, {
 			headers: {
-				'Content-Type': 'image/svg+xml',
+				'Content-Type': 'image/svg+xml; charset=utf-8',
 				'Cache-Control': 'no-cache, no-store, must-revalidate',
 				'Access-Control-Allow-Origin': '*',
 			},
