@@ -32,29 +32,17 @@ function icon(d: string, x: number, y: number, size: number, fill = 'rgba(255,25
 type ThemeName = 'dark' | 'light';
 
 interface Theme {
-	pageBg: string;
-	panelBg: string;
-	panelBgAlt: string;
-	surface: string;
-	surfaceAlt: string;
+	bg: string;
+	panel: string;
 	border: string;
 	title: string;
 	text: string;
 	muted: string;
-	subtle: string;
 	accent: string;
-	accentSoft: string;
-	accentStroke: string;
-	accentText: string;
 	chipBg: string;
 	chipBorder: string;
 	chipText: string;
 	icon: string;
-	iconMuted: string;
-	gridDot: string;
-	glowA: string;
-	glowB: string;
-	shadow: string;
 }
 
 interface RenderedChip {
@@ -64,54 +52,30 @@ interface RenderedChip {
 
 const THEMES: Record<ThemeName, Theme> = {
 	dark: {
-		pageBg: '#050816',
-		panelBg: '#0b1020',
-		panelBgAlt: '#111827',
-		surface: 'rgba(10, 15, 30, 0.82)',
-		surfaceAlt: 'rgba(8, 12, 24, 0.76)',
-		border: 'rgba(148, 163, 184, 0.16)',
-		title: '#f8fafc',
-		text: '#cbd5e1',
-		muted: '#94a3b8',
-		subtle: '#64748b',
-		accent: '#2dd4bf',
-		accentSoft: 'rgba(45, 212, 191, 0.14)',
-		accentStroke: 'rgba(45, 212, 191, 0.3)',
-		accentText: '#99f6e4',
-		chipBg: 'rgba(15, 23, 42, 0.92)',
-		chipBorder: 'rgba(148, 163, 184, 0.14)',
-		chipText: '#e2e8f0',
-		icon: 'rgba(226, 232, 240, 0.9)',
-		iconMuted: 'rgba(148, 163, 184, 0.78)',
-		gridDot: 'rgba(148, 163, 184, 0.1)',
-		glowA: 'rgba(45, 212, 191, 0.18)',
-		glowB: 'rgba(245, 158, 11, 0.12)',
-		shadow: 'rgba(2, 6, 23, 0.38)',
+		bg: '#0d1117',
+		panel: '#111827',
+		border: '#30363d',
+		title: '#f0f6fc',
+		text: '#c9d1d9',
+		muted: '#8b949e',
+		accent: '#2f81f7',
+		chipBg: '#161b22',
+		chipBorder: '#30363d',
+		chipText: '#c9d1d9',
+		icon: '#c9d1d9',
 	},
 	light: {
-		pageBg: '#f6f8fb',
-		panelBg: '#ffffff',
-		panelBgAlt: '#eef2f7',
-		surface: 'rgba(255, 255, 255, 0.86)',
-		surfaceAlt: 'rgba(248, 250, 252, 0.96)',
-		border: 'rgba(15, 23, 42, 0.08)',
-		title: '#0f172a',
-		text: '#334155',
-		muted: '#475569',
-		subtle: '#64748b',
-		accent: '#0f766e',
-		accentSoft: 'rgba(15, 118, 110, 0.1)',
-		accentStroke: 'rgba(15, 118, 110, 0.24)',
-		accentText: '#115e59',
-		chipBg: 'rgba(255, 255, 255, 0.96)',
-		chipBorder: 'rgba(15, 23, 42, 0.08)',
-		chipText: '#0f172a',
-		icon: 'rgba(15, 23, 42, 0.92)',
-		iconMuted: 'rgba(71, 85, 105, 0.78)',
-		gridDot: 'rgba(15, 23, 42, 0.08)',
-		glowA: 'rgba(15, 118, 110, 0.1)',
-		glowB: 'rgba(194, 65, 12, 0.08)',
-		shadow: 'rgba(15, 23, 42, 0.08)',
+		bg: '#ffffff',
+		panel: '#f6f8fa',
+		border: '#d0d7de',
+		title: '#1f2328',
+		text: '#24292f',
+		muted: '#57606a',
+		accent: '#0969da',
+		chipBg: '#ffffff',
+		chipBorder: '#d0d7de',
+		chipText: '#24292f',
+		icon: '#57606a',
 	},
 };
 
@@ -124,17 +88,6 @@ const LANGS = [
 	['c', 'C'],
 ] as const;
 
-const ORGS = [
-	['deepmind', 'DeepMind'],
-	['google', 'Google'],
-	['linux', 'Linux'],
-	['langchain', 'LangChain'],
-	['cloudflare', 'Cloudflare'],
-] as const;
-
-const PRINCIPLES = ['deterministic', 'auditable', 'capability-safe'] as const;
-const METRICS = ['50+ tools', 'single binary', 'zero runtime deps'] as const;
-
 function escapeXml(value: string): string {
 	return value
 		.replaceAll('&', '&amp;')
@@ -144,15 +97,12 @@ function escapeXml(value: string): string {
 		.replaceAll("'", '&apos;');
 }
 
-function textChip(label: string, x: number, y: number, theme: Theme, accent = false, fontSize = 11.5): RenderedChip {
+function textChip(label: string, x: number, y: number, theme: Theme, fontSize = 11.5): RenderedChip {
 	const width = Math.round(22 + label.length * (fontSize * 0.57));
-	const fill = accent ? theme.accentSoft : theme.chipBg;
-	const stroke = accent ? theme.accentStroke : theme.chipBorder;
-	const color = accent ? theme.accentText : theme.chipText;
 
 	return {
 		width,
-		svg: `<rect x="${x}" y="${y}" width="${width}" height="28" rx="14" fill="${fill}" stroke="${stroke}" stroke-width="1"/><text x="${x + width / 2}" y="${y + 18}" fill="${color}" font-size="${fontSize}" text-anchor="middle" class="mono">${escapeXml(label)}</text>`,
+		svg: `<rect x="${x}" y="${y}" width="${width}" height="28" rx="14" fill="${theme.chipBg}" stroke="${theme.chipBorder}" stroke-width="1"/><text x="${x + width / 2}" y="${y + 18}" fill="${theme.chipText}" font-size="${fontSize}" text-anchor="middle" class="mono">${escapeXml(label)}</text>`,
 	};
 }
 
@@ -171,125 +121,62 @@ function languageChip(
 	};
 }
 
-function orgMark(
-	key: keyof typeof ICON,
-	label: string,
-	cx: number,
-	y: number,
-	theme: Theme,
-): string {
-	return `${icon(ICON[key], cx - 10, y, 20, theme.iconMuted)}<text x="${cx}" y="${y + 34}" fill="${theme.muted}" font-size="10.5" text-anchor="middle" class="mono">${escapeXml(label)}</text>`;
-}
-
 function renderCard(themeName: ThemeName): string {
 	const theme = THEMES[themeName];
 	const W = 960;
-	const H = 380;
-	const panelX = 20;
-	const panelY = 20;
-	const panelW = 920;
-	const panelH = 340;
-	const leftX = 56;
-	const rightX = 520;
-	const topBoxY = 56;
-	const topBoxH = 140;
-	const bottomBoxY = 214;
-	const bottomBoxH = 104;
+	const H = 260;
+	const panelX = 24;
+	const panelY = 24;
+	const panelW = 912;
+	const panelH = 212;
+	const leftX = 52;
+	const rightX = 610;
 
 	let languageRow = '';
 	let cursor = leftX;
 	for (const [key, label] of LANGS) {
-		const chip = languageChip(key, label, cursor, 290, theme);
+		const chip = languageChip(key, label, cursor, 176, theme);
 		languageRow += chip.svg;
 		cursor += chip.width + 8;
 	}
 
-	let principleRow = '';
+	const meta = ['systems', 'edge', 'terminal tooling'];
+	let metaRow = '';
 	cursor = leftX;
-	for (const label of PRINCIPLES) {
-		const chip = textChip(label, cursor, 328, theme, true);
-		principleRow += chip.svg;
-		cursor += chip.width + 10;
-	}
-
-	let metricRow = '';
-	cursor = rightX + 24;
-	for (const label of METRICS) {
-		const chip = textChip(label, cursor, 153, theme);
-		metricRow += chip.svg;
+	for (const label of meta) {
+		const chip = textChip(label, cursor, 214, theme);
+		metaRow += chip.svg;
 		cursor += chip.width + 8;
 	}
 
-	const orgStart = rightX + 34;
-	const orgStep = 72;
-	let orgRow = '';
-	ORGS.forEach(([key, label], index) => {
-		orgRow += orgMark(key, label, orgStart + index * orgStep, 256, theme);
-	});
-
 	return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
 <title id="title">staticpayload profile card</title>
-<desc id="desc">A profile card for staticpayload highlighting systems work, languages, current project, and notable surfaces.</desc>
+<desc id="desc">A minimal profile card for staticpayload highlighting focus, stack, and current project.</desc>
 <defs>
-  <linearGradient id="panel-fill" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="${theme.panelBg}"/>
-    <stop offset="100%" stop-color="${theme.panelBgAlt}"/>
-  </linearGradient>
-  <radialGradient id="glow-left" cx="0%" cy="0%" r="85%">
-    <stop offset="0%" stop-color="${theme.glowA}"/>
-    <stop offset="100%" stop-color="transparent"/>
-  </radialGradient>
-  <radialGradient id="glow-right" cx="100%" cy="0%" r="75%">
-    <stop offset="0%" stop-color="${theme.glowB}"/>
-    <stop offset="100%" stop-color="transparent"/>
-  </radialGradient>
-  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
-    <circle cx="1.5" cy="1.5" r="0.9" fill="${theme.gridDot}"/>
-  </pattern>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-    <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="${theme.shadow}"/>
-  </filter>
   <style>
-    .sans { font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
-    .mono { font-family: "IBM Plex Mono", "SFMono-Regular", "Cascadia Code", Menlo, monospace; }
+    .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .mono { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
   </style>
 </defs>
 
-<rect width="${W}" height="${H}" fill="${theme.pageBg}"/>
-<rect width="${W}" height="${H}" fill="url(#grid)"/>
+<rect width="${W}" height="${H}" fill="${theme.bg}"/>
+<rect x="${panelX}" y="${panelY}" width="${panelW}" height="${panelH}" rx="16" fill="${theme.panel}" stroke="${theme.border}" stroke-width="1"/>
+<rect x="${leftX}" y="56" width="84" height="4" rx="2" fill="${theme.accent}"/>
 
-<g filter="url(#shadow)">
-  <rect x="${panelX}" y="${panelY}" width="${panelW}" height="${panelH}" rx="28" fill="url(#panel-fill)" stroke="${theme.border}" stroke-width="1.2"/>
-</g>
+<text x="${leftX}" y="86" fill="${theme.muted}" font-size="12" letter-spacing="2" class="mono">STATICPAYLOAD</text>
+<text x="${leftX}" y="122" fill="${theme.title}" font-size="34" font-weight="700" class="sans">systems, edge, terminal tooling</text>
+<text x="${leftX}" y="150" fill="${theme.text}" font-size="16" class="sans">building nyzhi and shipping low-level software in Rust, TypeScript, Python, Go, C++, and C</text>
 
-<rect x="${panelX}" y="${panelY}" width="${panelW}" height="${panelH}" rx="28" fill="url(#glow-left)"/>
-<rect x="${panelX}" y="${panelY}" width="${panelW}" height="${panelH}" rx="28" fill="url(#glow-right)"/>
-<rect x="${leftX}" y="67" width="112" height="4" rx="2" fill="${theme.accent}"/>
-
-<text x="${leftX}" y="94" fill="${theme.muted}" font-size="12" letter-spacing="2.8" class="mono">STATICPAYLOAD</text>
-<text x="${leftX}" y="134" fill="${theme.title}" font-size="34" font-weight="700" class="sans">systems, edge,</text>
-<text x="${leftX}" y="170" fill="${theme.title}" font-size="34" font-weight="700" class="sans">terminal-first tooling</text>
-
-<text x="${leftX}" y="210" fill="${theme.text}" font-size="16.5" class="sans">building nyzhi and shipping low-level software</text>
-<text x="${leftX}" y="235" fill="${theme.text}" font-size="16.5" class="sans">with a bias for deterministic, auditable systems</text>
-<text x="${leftX}" y="260" fill="${theme.text}" font-size="16.5" class="sans">that stay capability-safe under load.</text>
-
-<text x="${leftX}" y="280" fill="${theme.subtle}" font-size="11.5" letter-spacing="2" class="mono">STACK</text>
 ${languageRow}
-${principleRow}
+${metaRow}
 
-<rect x="${rightX}" y="${topBoxY}" width="364" height="${topBoxH}" rx="22" fill="${theme.surface}" stroke="${theme.border}" stroke-width="1"/>
-<text x="${rightX + 24}" y="84" fill="${theme.subtle}" font-size="11.5" letter-spacing="2" class="mono">CURRENT BUILD</text>
-<text x="${rightX + 24}" y="123" fill="${theme.title}" font-size="30" font-weight="700" class="sans">nyzhi</text>
-<text x="${rightX + 24}" y="148" fill="${theme.text}" font-size="15.5" class="sans">AI coding agent for the terminal.</text>
-<text x="${rightX + 24}" y="190" fill="${theme.muted}" font-size="11.5" class="mono">github.com/nyzhi-com/code</text>
-${metricRow}
+<rect x="${rightX}" y="60" width="286" height="124" rx="12" fill="${theme.bg}" stroke="${theme.border}" stroke-width="1"/>
+<text x="${rightX + 20}" y="88" fill="${theme.muted}" font-size="12" letter-spacing="2" class="mono">CURRENT</text>
+<text x="${rightX + 20}" y="118" fill="${theme.title}" font-size="24" font-weight="700" class="sans">nyzhi</text>
+<text x="${rightX + 20}" y="144" fill="${theme.text}" font-size="14" class="sans">AI coding agent for the terminal</text>
+<text x="${rightX + 20}" y="168" fill="${theme.muted}" font-size="12" class="mono">github.com/nyzhi-com/code</text>
 
-<rect x="${rightX}" y="${bottomBoxY}" width="364" height="${bottomBoxH}" rx="22" fill="${theme.surfaceAlt}" stroke="${theme.border}" stroke-width="1"/>
-<text x="${rightX + 24}" y="242" fill="${theme.subtle}" font-size="11.5" letter-spacing="2" class="mono">NOTABLE SURFACES</text>
-${orgRow}
-
-<text x="${rightX + 364}" y="340" fill="${theme.subtle}" font-size="10.5" text-anchor="end" class="mono">sp-stats.nyzhi.workers.dev/card.svg?theme=${themeName}</text>
+<text x="${rightX + 286}" y="214" fill="${theme.muted}" font-size="11" text-anchor="end" class="mono">sp-stats.nyzhi.workers.dev</text>
 </svg>`;
 }
 
