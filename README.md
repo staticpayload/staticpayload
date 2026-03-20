@@ -15,16 +15,15 @@
 
 > I build low-level, auditable software across kernel-adjacent work, privacy-preserving ML, deterministic agent systems, and developer tooling.
 >
-> I also have **100+ merge commits from kernel.org** in my GitHub history.
+> I also have **100+ merge commits from kernel.org**.
 
-## Selected Work
+## Contributions To Big Repos
 
-- [jax-privacy-rs](https://github.com/staticpayload/jax-privacy-rs) - Rust rewrite of JAX Privacy with DP-SGD primitives, PLD/RDP accounting, auditing, and adapters.
-- [oracle.omen](https://github.com/staticpayload/oracle.omen) - deterministic, auditable, capability-safe autonomous agent framework in Rust.
-- [covenant.data](https://github.com/staticpayload/covenant.data) - privacy-safe data governance and analytics with policy enforcement and audit logging.
-- [claude-forge](https://github.com/staticpayload/claude-forge) - multi-CLI delegation and orchestration for coding agents.
-- [oh-my-codex](https://github.com/staticpayload/oh-my-codex) - orchestration layer for Codex with workflows, memory, and async delegation.
-- [brex](https://github.com/staticpayload/brex) - Rust CLI for NVIDIA Brex.
+- [linux](https://github.com/staticpayload/linux) - kernel work, kernel-adjacent digging, and a long-running interest in upstream systems code
+- [gemma](https://github.com/staticpayload/gemma), [jax_privacy](https://github.com/staticpayload/jax_privacy), [optax](https://github.com/staticpayload/optax), [brax](https://github.com/staticpayload/brax), [etils](https://github.com/staticpayload/etils) - Google DeepMind and Google ML tooling
+- [workers-sdk](https://github.com/staticpayload/workers-sdk) and [firebase-tools](https://github.com/staticpayload/firebase-tools) - production developer tooling and platform CLIs
+- [blueprint](https://github.com/staticpayload/blueprint) and [docusaurus](https://github.com/staticpayload/docusaurus) - frontend and documentation infrastructure used at scale
+- [langchain](https://github.com/staticpayload/langchain), [homebrew-core](https://github.com/staticpayload/homebrew-core), and [tldr](https://github.com/staticpayload/tldr) - developer ecosystem projects with wide adoption
 
 ## What I Usually Touch
 
@@ -34,10 +33,10 @@
 - CLIs, editors, and developer automation
 - Rust, TypeScript, Python, Go, C++, and whatever else gets the job done
 
-## Around My Graph
+## How I Work
 
-- Forks and deep dives around [linux](https://github.com/staticpayload/linux), [gemma](https://github.com/staticpayload/gemma), [jax_privacy](https://github.com/staticpayload/jax_privacy), [optax](https://github.com/staticpayload/optax), [blueprint](https://github.com/staticpayload/blueprint), and [workers-sdk](https://github.com/staticpayload/workers-sdk)
-- I like understanding real systems from the inside, then building sharper versions of them
+- I like understanding real systems from the inside, then shipping practical improvements
+- Most of my interest clusters around kernels, privacy, infra, ML systems, and serious developer tools
 
 <div align="center">
 
