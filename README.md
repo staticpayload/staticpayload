@@ -8,16 +8,15 @@
 
 <p>
   Bio says: <code>I like nothing</code><br />
-  The repo graph says otherwise.
 </p>
 
 </div>
 
 > I build low-level, auditable software across kernel-adjacent work, privacy-preserving ML, deterministic agent systems, and developer tooling.
 >
-> I also have **100+ merge commits from kernel.org**.
+> I am a kernel.org nerd.**.
 
-## Contributions To Big Repos
+## Major Contributor
 
 - [linux](https://github.com/staticpayload/linux) - kernel work, kernel-adjacent digging, and a long-running interest in upstream systems code
 - [gemma](https://github.com/staticpayload/gemma), [jax_privacy](https://github.com/staticpayload/jax_privacy), [optax](https://github.com/staticpayload/optax), [brax](https://github.com/staticpayload/brax), [etils](https://github.com/staticpayload/etils) - Google DeepMind and Google ML tooling
@@ -39,9 +38,5 @@
 - Most of my interest clusters around kernels, privacy, infra, ML systems, and serious developer tools
 
 <div align="center">
-
-<a href="https://github.com/staticpayload">
-  <img src="https://sp-stats.nyzhi.workers.dev/card.svg" width="100%" alt="staticpayload" />
-</a>
 
 </div>
